@@ -1,7 +1,7 @@
 Project Name
 ==============================
 
-This project is a starting Pack for MLOps projects based on the subject "movie_recommandation". It's not perfect so feel free to make some modifications on it.
+This project is a starting Pack for MLOps projects based on the subject "London Fire Brigade Response Time". It's not perfect so feel free to make some modifications on it.
 
 Project Organization
 ------------
