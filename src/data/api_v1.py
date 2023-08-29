@@ -1,5 +1,5 @@
 from import_raw_data import result, columns
-from modèle import model_lgb, rmse, r2
+from model import model_lgb, rmse, r2
 from make_dataset import data
 
 from fastapi import FastAPI, Header, HTTPException, Query, status, Depends
