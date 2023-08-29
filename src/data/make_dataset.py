@@ -22,9 +22,9 @@ string_cols = ['IncGeo_BoroughCode', 'IncGeo_WardCode', 'IncidentStationGround']
 data[string_cols] = data[string_cols].astype(str)
 label_encoder = LabelEncoder()
 df_encoded = data[string_cols].apply(label_encoder.fit_transform)
-data.drop(string_cols, axis=1, inplace=True)
+df_int = data.drop(string_cols, axis=1)
 
-df = data.join(df_encoded)
+df = df_int.join(df_encoded)
 
 
 ## Création/suppression de variables
@@ -35,4 +35,4 @@ df['Month'] = df['DateOfCall'].dt.month
 df.drop('DateOfCall',axis=1, inplace=True)
 
 print(df.info())
-print(data.dtypes)
+print(data.info())
