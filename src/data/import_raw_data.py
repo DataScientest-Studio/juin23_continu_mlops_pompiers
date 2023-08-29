@@ -1,46 +1,35 @@
-import requests
-import os
-import logging
-from check_structure import check_existing_file, check_existing_folder
+import mysql.connector
 
+# Établissement de la connexion à la base de données
+connection = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="Pompiers2023*",
+    database="london_fire_brigade",
+    auth_plugin='mysql_native_password'
+)
 
-def import_raw_data(raw_data_relative_path, 
-                    filenames,
-                    bucket_folder_url):
-    '''import filenames from bucket_folder_url in raw_data_relative_path'''
-    if check_existing_folder(raw_data_relative_path):
-        os.makedirs(raw_data_relative_path)
-    # download all the files
-    for filename in filenames :
-        input_file = os.path.join(bucket_folder_url,filename)
-        output_file = os.path.join(raw_data_relative_path, filename)
-        if check_existing_file(output_file):
-            object_url = input_file
-            print(f'downloading {input_file} as {os.path.basename(output_file)}')
-            response = requests.get(object_url)
-            if response.status_code == 200:
-                # Process the response content as needed
-                content = response.text
-                text_file = open(output_file, "wb")
-                text_file.write(content.encode('utf-8'))
-                text_file.close()
-            else:
-                print(f'Error accessing the object {input_file}:', response.status_code)
-                
-def main(raw_data_relative_path="../../data/raw", 
-        filenames = ["genome-scores.csv", "genome-tags.csv", "links.csv", 
-                    "movies.csv", "ratings.csv", "README.txt", "tags.csv"],
-        bucket_folder_url= "https://mlops-project-db.s3.eu-west-1.amazonaws.com/movie_recommandation/"          
-        ):
-    """ Upload data from AWS s3 in ./data/raw
-    """
-    import_raw_data(raw_data_relative_path, filenames, bucket_folder_url)
-    logger = logging.getLogger(__name__)
-    logger.info('making raw data set')
+# Création d'un curseur pour exécuter la requête SQL
+cursor = connection.cursor()
 
+# Exécution de la requête SQL dans MySQL
+query = """
+SELECT 
+    i.DateOfCall, i.HourOfCall, i.IncGeo_BoroughCode, i.IncGeo_WardCode, 
+    i.Easting_rounded, i.Northing_rounded, i.IncidentStationGround,
+    i.NumStationsWithPumpsAttending, i.NumPumpsAttending, i.PumpCount, i.PumpHoursRoundUp,
+    m.PumpOrder, COALESCE(NULLIF(m.DelayCodeId, ''), 1) AS DelayCodeId, m.AttendanceTimeSeconds
+FROM incident i
+RIGHT JOIN mobilisation m ON i.IncidentNumber = m.IncidentNumber
+WHERE i.DateOfCall IS NOT NULL AND i.PumpHoursRoundUp IS NOT NULL
+"""
+cursor.execute(query)
 
-if __name__ == '__main__':
-    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
-    
-    main()
+columns = [column[0] for column in cursor.description]
+
+# Récupération des données
+result = cursor.fetchall()
+
+# Fermeture du curseur et de la connexion
+cursor.close()
+connection.close()

@@ -1,30 +1,38 @@
-# -*- coding: utf-8 -*-
-import click
-import logging
-from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
+from import_raw_data import result, columns
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
-    """ Runs data processing scripts to turn raw data from (../raw) into
-        cleaned data ready to be analyzed (saved in ../processed).
-    """
-    logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+data = pd.DataFrame(result, columns=columns)
+
+# CONVERTIR LES TYPES DE DONNEES AU FORMAT APPROPRIE
+
+# Format date
+data['DateOfCall'] = pd.to_datetime(data['DateOfCall']) # Format date
+
+# Variables au format integer
+int_columns = ['HourOfCall', 'Easting_rounded', 'Northing_rounded',
+               'NumStationsWithPumpsAttending', 'NumPumpsAttending', 'PumpCount',
+               'PumpHoursRoundUp', 'PumpOrder', 'DelayCodeId', 'AttendanceTimeSeconds']
+
+data[int_columns] = data[int_columns].astype(int)
+
+  # Encodage des variables qui ont des valeurs sous forme de chaines de caractère
+string_cols = ['IncGeo_BoroughCode', 'IncGeo_WardCode', 'IncidentStationGround']
+data[string_cols] = data[string_cols].astype(str)
+label_encoder = LabelEncoder()
+df_encoded = data[string_cols].apply(label_encoder.fit_transform)
+data.drop(string_cols, axis=1, inplace=True)
+
+df = data.join(df_encoded)
 
 
-if __name__ == '__main__':
-    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
+## Création/suppression de variables
+# Extraire de 'DateofCall' une variable significative: le mois
+df['Month'] = df['DateOfCall'].dt.month
 
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
+# Suppression de la variable 'DateofCall'
+df.drop('DateOfCall',axis=1, inplace=True)
 
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
-
-    main()
+print(df.info())
+print(data.dtypes)
