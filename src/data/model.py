@@ -25,19 +25,19 @@ lr.fit(X_train, y_train)
 
 y_pred = lr.predict(X_test)
 
-mse = mean_squared_error(y_test, y_pred)
-mae = mean_absolute_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-rmse = np.sqrt(mse)
-mpe = np.mean((y_test - y_pred) / y_test) * 100
+mse_lr = mean_squared_error(y_test, y_pred)
+mae_lr = mean_absolute_error(y_test, y_pred)
+r2_lr = r2_score(y_test, y_pred)
+rmse_lr = np.sqrt(mse_lr)
+mpe_lr = np.mean((y_test - y_pred) / y_test) * 100
 
 # Affichage des métriques
 print("Métriques LR:")
-print("Mean Squared Error (MSE): ", mse)
-print("Mean Absolute Error (MAE): ", mae)
-print("R-squared (R²): ", r2)
-print("Root Mean Squared Error (RMSE): ", rmse)
-print("Mean Percentage Error (MPE): ", mpe)
+print("Mean Squared Error (MSE): ", mse_lr)
+print("Mean Absolute Error (MAE): ", mae_lr)
+print("R-squared (R²): ", r2_lr)
+print("Root Mean Squared Error (RMSE): ", rmse_lr)
+print("Mean Percentage Error (MPE): ", mpe_lr)
 
 print("\nScore LR:")
 print('score train :', lr.score(X_train, y_train))
@@ -50,16 +50,15 @@ model_lgb.fit(X_train, y_train)
 y_pred = model_lgb.predict(X_test)
 
 # Calcul des métriques
-mse = mean_squared_error(y_test, y_pred)
-mae = mean_absolute_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-rmse = np.sqrt(mse)
-mpe = np.mean((y_test - y_pred) / y_test) * 100
+mse_lgb = mean_squared_error(y_test, y_pred)
+mae_lgb = mean_absolute_error(y_test, y_pred)
+r2_lgb = r2_score(y_test, y_pred)
+rmse_lgb = np.sqrt(mse_lgb)
 
 # Affichage des métriques
 print("Métriques LGB:")
-print("Mean Squared Error (MSE): ", mse)
-print("Mean Absolute Error (MAE): ", mae)
-print("R-squared (R²): ", r2)
-print("Root Mean Squared Error (RMSE): ", rmse)
+print("Mean Squared Error (MSE): ", mse_lgb)
+print("Mean Absolute Error (MAE): ", mae_lgb)
+print("R-squared (R²): ", r2_lgb)
+print("Root Mean Squared Error (RMSE): ", rmse_lgb)
 print('\n')
