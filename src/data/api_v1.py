@@ -1,5 +1,5 @@
 from import_raw_data import result, columns
-from model import model_lgb, rmse, r2
+from model import model_lgb, r2_lgb, rmse_lgb
 from make_dataset import data
 
 from fastapi import FastAPI, Header, HTTPException, Query, status, Depends
@@ -98,10 +98,10 @@ async def get_sample(current_user: str = Depends(verify_credentials)):
 @api.get('/modele/metrics/r2', tags=['Machine Learning'], name='Metrics R-squarred')
 async def get_metrics(current_user: str = Depends(verify_credentials)):
     """Obtenir le score d'évaluation r² du modèle"""
-    return f"R-squared (R²): {r2}"
+    return f"R-squared (R²): {r2_lgb}"
 
 @api.get('/modele/metrics/rmse', tags=['Machine Learning'], name='Metrics RMSE')
 async def get_metrics(current_user: str = Depends(verify_credentials)):
     """Obtenir le score d'évaluation RMSE du modèle"""
-    return f"Root Mean Squared Error (RMSE): {rmse}"
+    return f"Root Mean Squared Error (RMSE): {rmse_lgb}"
 
