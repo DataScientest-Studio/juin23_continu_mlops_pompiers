@@ -4,9 +4,8 @@ import mysql.connector
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Pompiers2023*",
-    database="london_fire_brigade",
-    auth_plugin='mysql_native_password'
+    password="pompiers",
+    database="london_fire_brigade"
 )
 
 # Création d'un curseur pour exécuter la requête SQL
