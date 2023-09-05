@@ -1,13 +1,11 @@
 import numpy as np
-from ..data.make_dataset import df
+from data.make_dataset import df
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
-
+​
 from sklearn.linear_model import LinearRegression
 import lightgbm as lgb
-
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-
 
 X = df.drop('AttendanceTimeSeconds', axis=1)
 y = df['AttendanceTimeSeconds']

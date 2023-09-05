@@ -8,7 +8,6 @@ import lightgbm as lgb
 
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-
 X = df.drop('AttendanceTimeSeconds', axis=1)
 y = df['AttendanceTimeSeconds']
 
