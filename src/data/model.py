@@ -59,11 +59,13 @@ def evaluate_model(model_name, y_test, y_pred):
     rmse = np.sqrt(mse)
 
     # Affichage des métriques
-    print(f"Métriques {model_name}:")
+    print(f"Métriques du modèle {model_name}:")
     print("Mean Squared Error (MSE): ", mse)
     print("Mean Absolute Error (MAE): ", mae)
     print("R-squared (R²): ", r2)
     print("Root Mean Squared Error (RMSE): ", rmse)
+
+    return mse, mae, r2, rmse
 
 # Préparation des données :
 X_train, X_test, y_train, y_test = prepare_data(df)
@@ -71,9 +73,9 @@ X_train, X_test, y_train, y_test = prepare_data(df)
 # Entrainement et résultats du modèle de régression linéaire :
 model_lr = train_linear_reg(X_train, y_train)
 y_pred_lr = pred_model(model_lr, X_test)
-evaluate_model('Régression linéaire', y_test, y_pred_lr)
+mse_lr, mae_lr, r2_lr, rmse_lr = evaluate_model('Régression linéaire', y_test, y_pred_lr)
 
 # Entrainement et résultats du modèle Light GBM :
 model_lgb = train_lightgbm(X_train, y_train)
 y_pred_lgb = pred_model(model_lgb, X_test)
-evaluate_model('Light GBM', y_test, y_pred_lgb)
+mse_lgb, mae_lgb, r2_lgb, rmse_lgb = evaluate_model('Light GBM', y_test, y_pred_lgb)
