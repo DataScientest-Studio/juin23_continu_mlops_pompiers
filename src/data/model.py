@@ -9,7 +9,7 @@ import lightgbm as lgb
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 
-def prepare_data() :
+def prepare_data(df) :
     '''
     Sépare les features de la variable cible
     Sépare les données en set d'entrainement et de test
@@ -66,7 +66,7 @@ def evaluate_model(model_name, y_test, y_pred):
     print("Root Mean Squared Error (RMSE): ", rmse)
 
 # Préparation des données :
-X_train, X_test, y_train, y_test = prepare_data()
+X_train, X_test, y_train, y_test = prepare_data(df)
 
 # Entrainement et résultats du modèle de régression linéaire :
 model_lr = train_linear_reg(X_train, y_train)
