@@ -8,56 +8,72 @@ import lightgbm as lgb
 
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-X = df.drop('AttendanceTimeSeconds', axis=1)
-y = df['AttendanceTimeSeconds']
 
+def prepare_data() :
+    '''
+    Sépare les features de la variable cible
+    Sépare les données en set d'entrainement et de test
+    Normalisation des données sur les ensembles de train et de test
+    '''
+    X = df.drop('AttendanceTimeSeconds', axis=1)
+    y = df['AttendanceTimeSeconds']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=0)
+    sc = MinMaxScaler()
+    X_train = sc.fit_transform(X_train)
+    X_test = sc.transform(X_test)
+    return X_train, X_test, y_train, y_test
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=0)
+def train_linear_reg(X_train, y_train):
+    '''
+    Entrainement du modèle de régression linéaire
+    '''
+    model_lr = LinearRegression()
+    model_lr.fit(X_train, y_train)
+    return model_lr
 
+def train_lightgbm(X_train, y_train):
+    '''
+    Entrainement du modèle Light GBM
+    '''
+    model_lgb = lgb.LGBMRegressor()
+    model_lgb.fit(X_train, y_train)
+    return model_lgb
 
-sc = MinMaxScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
+def pred_model(model, X_test):
+    '''
+    Obtenir les prédictions du modèle
+    '''
+    y_pred = model.predict(X_test)
+    return y_pred
 
-lr = LinearRegression()
-lr.fit(X_train, y_train)
+def evaluate_model(model_name, y_test, y_pred):
+    '''
+    Calcul et affichage des résultats : 
+    MSE, MAE, R², RMSE
+    '''
 
-y_pred = lr.predict(X_test)
+    # Calcul des métriques
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mse)
 
-mse_lr = mean_squared_error(y_test, y_pred)
-mae_lr = mean_absolute_error(y_test, y_pred)
-r2_lr = r2_score(y_test, y_pred)
-rmse_lr = np.sqrt(mse_lr)
-mpe_lr = np.mean((y_test - y_pred) / y_test) * 100
+    # Affichage des métriques
+    print(f"Métriques {model_name}:")
+    print("Mean Squared Error (MSE): ", mse)
+    print("Mean Absolute Error (MAE): ", mae)
+    print("R-squared (R²): ", r2)
+    print("Root Mean Squared Error (RMSE): ", rmse)
 
-# Affichage des métriques
-print("Métriques LR:")
-print("Mean Squared Error (MSE): ", mse_lr)
-print("Mean Absolute Error (MAE): ", mae_lr)
-print("R-squared (R²): ", r2_lr)
-print("Root Mean Squared Error (RMSE): ", rmse_lr)
-print("Mean Percentage Error (MPE): ", mpe_lr)
+# Préparation des données :
+X_train, X_test, y_train, y_test = prepare_data()
 
-print("\nScore LR:")
-print('score train :', lr.score(X_train, y_train))
-print('score test :', lr.score(X_test, y_test))
-print('\n')
+# Entrainement et résultats du modèle de régression linéaire :
+model_lr = train_linear_reg(X_train, y_train)
+y_pred_lr = pred_model(model_lr, X_test)
+evaluate_model('Régression linéaire', y_test, y_pred_lr)
 
-model_lgb = lgb.LGBMRegressor()
-model_lgb.fit(X_train, y_train)
-
-y_pred = model_lgb.predict(X_test)
-
-# Calcul des métriques
-mse_lgb = mean_squared_error(y_test, y_pred)
-mae_lgb = mean_absolute_error(y_test, y_pred)
-r2_lgb = r2_score(y_test, y_pred)
-rmse_lgb = np.sqrt(mse_lgb)
-
-# Affichage des métriques
-print("Métriques LGB:")
-print("Mean Squared Error (MSE): ", mse_lgb)
-print("Mean Absolute Error (MAE): ", mae_lgb)
-print("R-squared (R²): ", r2_lgb)
-print("Root Mean Squared Error (RMSE): ", rmse_lgb)
-print('\n')
+# Entrainement et résultats du modèle Light GBM :
+model_lgb = train_lightgbm(X_train, y_train)
+y_pred_lgb = pred_model(model_lgb, X_test)
+evaluate_model('Light GBM', y_test, y_pred_lgb)
