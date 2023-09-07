@@ -2,7 +2,7 @@ import mysql.connector
 
 # Établissement de la connexion à la base de données
 connection = mysql.connector.connect(
-    host="localhost",
+    host="localhost", #A TESTER : '127.0.0.1'
     user="root",
     password="pompiers",
     database="london_fire_brigade"
