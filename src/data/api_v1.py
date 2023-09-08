@@ -4,6 +4,7 @@ from make_dataset import data
 
 from fastapi import FastAPI, Header, HTTPException, Query, status, Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+import uvicorn
 import pandas as pd
 from pydantic import BaseModel
 from typing import Optional, List, Dict
@@ -96,12 +97,15 @@ async def get_sample(current_user: str = Depends(verify_credentials)):
     return data[-10:]
 
 @api.get('/modele/metrics/r2', tags=['Machine Learning'], name='Metrics R-squarred')
-async def get_metrics(current_user: str = Depends(verify_credentials)):
+async def get_metrics_r2(current_user: str = Depends(verify_credentials)):
     """Obtenir le score d'évaluation r² du modèle"""
     return f"R-squared (R²): {r2_lgb}"
 
 @api.get('/modele/metrics/rmse', tags=['Machine Learning'], name='Metrics RMSE')
-async def get_metrics(current_user: str = Depends(verify_credentials)):
+async def get_metrics_rmse(current_user: str = Depends(verify_credentials)):
     """Obtenir le score d'évaluation RMSE du modèle"""
     return f"Root Mean Squared Error (RMSE): {rmse_lgb}"
+
+if __name__ == "__main__":
+    uvicorn.run(api, host="0.0.0.0", port=8000)
 
