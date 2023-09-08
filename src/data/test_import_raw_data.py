@@ -7,10 +7,10 @@ import pytest
 def test_database_connection():
   try:
       connection = mysql.connector.connect(
-          host="localhost",
-          user="root",
-          password="pompiers",
-          database="london_fire_brigade"
+        host="lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com", # databse hébergée sur serveur AWS
+        user="admin",
+        password="pompiers",
+        database="london_fire_brigade"
       )
       assert connection.is_connected() == True
   except mysql.connector.Error as err:
