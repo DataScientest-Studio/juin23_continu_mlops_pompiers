@@ -34,6 +34,7 @@ users_db = {
     "willy": "Pompiers2023*",
     "djamel": "pompiers",
     "root": "pompiers",
+    "admin": "pompiers"
 }
 
 # Fonction pour la vérification des identifiants et mots de passe des utilisateurs.
