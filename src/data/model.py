@@ -22,7 +22,7 @@ def prepare_data(df) :
     sc = MinMaxScaler()
     X_train = sc.fit_transform(X_train)
     X_test = sc.transform(X_test)
-    return X_train, X_test, y_train, y_test
+    return X_train, X_test, y_train, y_test, sc
 
 def train_linear_reg(X_train, y_train):
     '''
@@ -77,7 +77,9 @@ def evaluate_model(model_name, y_test, y_pred):
     return mse, mae, r2, rmse
 
 # Préparation des données :
-X_train, X_test, y_train, y_test = prepare_data(df)
+X_train, X_test, y_train, y_test, scaler = prepare_data(df)
+
+print(f"colonnes  : {df.drop('AttendanceTimeSeconds', axis=1).columns}")
 
 # Entrainement et résultats du modèle de régression linéaire :
 model_lr = train_linear_reg(X_train, y_train)
