@@ -1,7 +1,6 @@
 from data.import_raw_data import result, columns
-from data.make_dataset import load_data
-from models_training.model import r2_lgb, rmse_lgb
-from api.users import verify_credentials
+from data.make_dataset import data
+from model import model_lgb, r2_lgb, rmse_lgb
 
 from fastapi import FastAPI, Depends
 import uvicorn
