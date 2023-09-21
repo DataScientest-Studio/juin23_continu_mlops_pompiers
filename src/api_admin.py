@@ -1,8 +1,8 @@
 from data.import_raw_data import result, columns
 from data.make_dataset import data
-from model import model_lgb, r2_lgb, rmse_lgb
+from model import r2_lgb, rmse_lgb
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Query, Depends
 import uvicorn
 
 import pandas as pd
