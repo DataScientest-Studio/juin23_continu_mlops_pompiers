@@ -49,10 +49,7 @@ async def get_index(current_user: str = Depends(verify_credentials)):
 
 @app.post('/predict', tags=['Machine Learning'], name='predictions')
 async def predict(data : NewCall):
-     # Automatiser la capture de l'heure et du mois actuels
-    current_time = datetime.datetime.now()
-    data.HourOfCall = current_time.hour
-    data.Month = current_time.month
+     
 
 
     new_data = [[
@@ -78,7 +75,6 @@ async def predict(data : NewCall):
  # Return the prediction
     return {'predictions': predictions}
 
-#loaded_model_rf = load('model_rf.joblib')
 
 if __name__ == '__main__':    
     uvicorn.run(app, host='localhost', port=8001)
