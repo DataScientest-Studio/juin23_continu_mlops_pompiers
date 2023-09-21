@@ -22,7 +22,7 @@ def test_prediction():
         "DelayCodeId": 1,
         "Month": 6
     }
-    response = requests.post('http://127.0.0.1:8000/modele/predict/', json=data)
+    response = requests.post('http://localhost:8000/modele/predict/', json=data)
 
     # Vérifier que la réponse a un code 200 (OK)
     assert response.status_code == 200
@@ -44,7 +44,7 @@ def test_prediction_invalid_datatypes():
         "DelayCodeId": 1,
         "Month": 6
     }
-    response = requests.post('http://127.0.0.1:8000/modele/predict/', json=data)
+    response = requests.post('http://localhost:8000/modele/predict/', json=data)
 
     # Vérifier que la réponse a un code 200 (OK)
     assert response.status_code == 422
