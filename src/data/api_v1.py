@@ -131,7 +131,15 @@ async def predict(new_call: NewCall):
     # Retourner la prédiction
     return {"prediction": prediction[0]}
 
-
 if __name__ == "__main__":
-    uvicorn.run(api, host="0.0.0.0", port=8000)
+    import os
+    import sys
+    if "pytest" in sys.argv[0]:
+        # Exécution avec pytest (s'exécutera localement)
+        host = "0.0.0.0"
+    else:
+        # Exécution normale (s'exécutera sur localhost)
+        host = "localhost"
+
+    uvicorn.run(api, host=host, port=8000)
 
