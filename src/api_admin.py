@@ -6,6 +6,10 @@ from api.users import verify_credentials
 from fastapi import FastAPI, Depends
 import uvicorn
 
+import pandas as pd
+from typing import Optional, List, Dict
+
+from users import verify_credentials
 
 api = FastAPI(
     title='London Fire Brigade for admins',
