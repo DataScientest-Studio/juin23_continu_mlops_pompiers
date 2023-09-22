@@ -36,6 +36,7 @@ api = FastAPI(
 users_db = {
     "willy": "Pompiers2023*",
     "djamel": "pompiers",
+    "jonathan": "pompiers2023*",
     "root": "pompiers",
     "admin": "pompiers"
 }
