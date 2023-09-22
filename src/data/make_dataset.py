@@ -1,4 +1,4 @@
-from import_raw_data import result, columns
+from data.import_raw_data import result, columns
 import pandas as pd
 import joblib
 from sklearn.preprocessing import LabelEncoder
@@ -48,8 +48,8 @@ def create_and_drop_columns(converted_data):
 
 
 # Application des transformations :
-data = load_data(result, columns)
-converted_data = convert_data_types(data)
+data_db = load_data(result, columns)
+converted_data = convert_data_types(data_db)
 df = create_and_drop_columns(converted_data)
 
 print(df.info())
