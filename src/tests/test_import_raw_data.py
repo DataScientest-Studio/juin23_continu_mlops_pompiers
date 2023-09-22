@@ -1,6 +1,3 @@
-import sys
-print("path import raw data : ", sys.path)
-
 from data.import_raw_data import result, columns
 
 import mysql.connector
