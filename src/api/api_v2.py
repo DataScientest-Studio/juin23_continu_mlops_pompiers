@@ -51,7 +51,6 @@ async def get_index(current_user: str = Depends(verify_credentials)):
 async def predict(data : NewCall):
      
 
-
     new_data = [[
             data.HourOfCall,
             data.Easting_rounded,
