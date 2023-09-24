@@ -1,5 +1,5 @@
 import numpy as np
-from data.make_dataset import df
+from src.data.make_dataset import df
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
