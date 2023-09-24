@@ -1,13 +1,3 @@
-import os
-import sys
-
-current_dir = os.path.dirname(os.path.realpath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, os.pardir))
-
-data_dir = os.path.join(project_root, 'data')
-sys.path.append(data_dir)
-
-
 import numpy as np
 from data.make_dataset import df
 from sklearn.model_selection import train_test_split
