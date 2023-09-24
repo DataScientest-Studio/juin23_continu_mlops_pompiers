@@ -1,4 +1,4 @@
-from schema import NewCall
+from api.schema import NewCall
 
 import pytest
 
