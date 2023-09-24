@@ -1,8 +1,16 @@
-from src.data.import_raw_data import result, columns, DB_HOST, DB_NAME, DB_PASSWORD, DB_USER
+from data.import_raw_data import result, columns
+from config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 
 import mysql.connector
 import pytest
 
+from decouple import config
+
+
+DB_HOST = config('DB_HOST')
+DB_USER = config('DB_USER')
+DB_PASSWORD = config('DB_PASSWORD')
+DB_NAME = config('DB_NAME')
 
 # Vérifier la connexion à la base de donnée
 def test_database_connection():
