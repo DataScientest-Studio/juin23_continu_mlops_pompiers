@@ -1,4 +1,4 @@
-from data.import_raw_data import result, columns
+from src.data.import_raw_data import result, columns
 import pandas as pd
 from joblib import dump
 from sklearn.preprocessing import LabelEncoder
