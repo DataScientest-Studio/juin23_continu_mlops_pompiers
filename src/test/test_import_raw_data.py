@@ -29,10 +29,7 @@ def test_len_columns():
 
 
 
-from data.import_raw_data import result, columns
 
-import mysql.connector
-import pytest
 
 # Vérifier la connexion à la base de donnée
 def test_database_connection():
