@@ -1,4 +1,4 @@
-from import_raw_data import result, columns, DB_HOST, DB_NAME, DB_PASSWORD, DB_USER
+from src.data.import_raw_data import result, columns, DB_HOST, DB_NAME, DB_PASSWORD, DB_USER
 
 import mysql.connector
 import pytest
