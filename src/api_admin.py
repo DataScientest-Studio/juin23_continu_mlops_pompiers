@@ -1,6 +1,6 @@
 from data.import_raw_data import result, columns
 from data.make_dataset import data
-from model import r2_lgb, rmse_lgb
+from models.model import r2_lgb, rmse_lgb
 
 from fastapi import FastAPI, Query, Depends
 import uvicorn
@@ -8,7 +8,7 @@ import uvicorn
 import pandas as pd
 from typing import Optional, List, Dict
 
-from users import verify_credentials
+from api.users import verify_credentials
 
 api = FastAPI(
     title='London Fire Brigade for admins',
