@@ -1,16 +1,11 @@
 from data.import_raw_data import result, columns
-from models.model import model_lgb, r2_lgb, rmse_lgb, scaler
-from data.make_dataset import data_db
+from data.make_dataset import load_data
+from models_training.model import r2_lgb, rmse_lgb
+from api.users import verify_credentials
 
 from fastapi import FastAPI, Header, HTTPException, Query, status, Depends
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import uvicorn
-import pandas as pd
-import joblib
-from pydantic import BaseModel
-from typing import Optional, List, Dict
-from datetime import datetime
-from sklearn.preprocessing import LabelEncoder
+
 
 api = FastAPI(
     title='London Fire Brigade',
@@ -32,48 +27,8 @@ api = FastAPI(
     )
 
 
-#Dictionnaire des identifiants et des mots de passe :
-users_db = {
-    "willy": "Pompiers2023*",
-    "djamel": "pompiers",
-    "jonathan": "pompiers2023*",
-    "root": "pompiers",
-    "admin": "pompiers"
-}
-
-# Fonction pour la vérification des identifiants et mots de passe des utilisateurs.
-def verify_credentials(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
-    user = credentials.username
-    password = credentials.password
-
-    if user in users_db and password == users_db[user]:
-        return user
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Unauthorized",
-        headers={"WWW-Authenticate": "Basic"},
-    )
-
-
-# Classe new_call pour faire une prédiction.
-class NewCall(BaseModel):
-    HourOfCall: int #TODO Ajouter la condition pour que ce soit un entier compris entre 0 et 23
-    IncGeo_BoroughCode: str
-    IncGeo_WardCode: str
-    Easting_rounded: int
-    Northing_rounded: int
-    IncidentStationGround: str
-    NumStationsWithPumpsAttending: int
-    NumPumpsAttending: int
-    PumpCount: int
-    PumpHoursRoundUp: int
-    PumpOrder: int
-    DelayCodeId: int
-    Month: int #TODO Ajouter la condition pour que ce soit un entier compris entre 1 et 12
-
-# Mise en forme de la base de donnée depuis le dataframe :
-data_db = data_db.to_dict(orient='records')
-
+# Chargement de la base de donnée et conversion au format dictionnaire :
+data_db = load_data(result, columns).to_dict(orient='records')
 
 #Dictionnaire des codes d'erreur : 
 responses = {
@@ -100,37 +55,16 @@ async def get_sample(current_user: str = Depends(verify_credentials)):
     """Obtenir les 20 dernières lignes de la base de donnée"""
     return data_db[-10:]
 
-@api.get('/modele/metrics/r2', tags=['Machine Learning'], name='Metrics R-squarred')
+@api.get('/model/metrics/r2', tags=['Machine Learning'], name='Metrics R-squarred')
 async def get_metrics_r2(current_user: str = Depends(verify_credentials)):
     """Obtenir le score d'évaluation r² du modèle"""
     return f"R-squared (R²): {r2_lgb}"
 
-@api.get('/modele/metrics/rmse', tags=['Machine Learning'], name='Metrics RMSE')
+@api.get('/model/metrics/rmse', tags=['Machine Learning'], name='Metrics RMSE')
 async def get_metrics_rmse(current_user: str = Depends(verify_credentials)):
     """Obtenir le score d'évaluation RMSE du modèle"""
     return f"Root Mean Squared Error (RMSE): {rmse_lgb}"
 
-
-@api.post("/modele/predict/", tags=['Machine Learning'], name='Prediction')
-async def predict(new_call: NewCall):
-    # Extraire les données
-    input_data = pd.DataFrame([new_call.model_dump()])
-    
-    # Convertir les données str en int en utilisant le dictionnaire importé
-    string_cols = ['IncGeo_BoroughCode', 'IncGeo_WardCode', 'IncidentStationGround']
-
-    encoder = joblib.load('label_encoder.pkl') # Je charge le LabelEncoder déjà ajusté aux données d'entrainement
-
-    input_data[string_cols] = input_data[string_cols].apply(encoder.fit_transform)
-
-    # Standardiser les données
-    scaled_data = scaler.transform(input_data)
-
-    # Faire une prédiction à partir du modèle :
-    prediction = model_lgb.predict(scaled_data)  # Adjust this based on your model's input format
-
-    # Retourner la prédiction
-    return {"prediction": prediction[0]}
 
 if __name__ == "__main__":
     uvicorn.run(api, host="127.0.0.1", port=8000)

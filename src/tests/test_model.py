@@ -1,4 +1,4 @@
-from models.model import mse_lgb, mae_lgb, r2_lgb, rmse_lgb
+from models_training.model import mse_lgb, mae_lgb, r2_lgb, rmse_lgb
 
 import pytest
 
