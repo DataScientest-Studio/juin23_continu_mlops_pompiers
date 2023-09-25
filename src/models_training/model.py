@@ -1,11 +1,13 @@
 import numpy as np
 from data.make_dataset import df
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 import lightgbm as lgb
+from joblib import dump
 
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
@@ -90,6 +92,8 @@ mse_lr, mae_lr, r2_lr, rmse_lr = evaluate_model('Régression linéaire', y_test,
 model_lgb = train_lightgbm(X_train, y_train)
 y_pred_lgb = pred_model(model_lgb, X_test)
 mse_lgb, mae_lgb, r2_lgb, rmse_lgb = evaluate_model('Light GBM', y_test, y_pred_lgb)
+
+dump(model_lgb, 'models/model_lgb.joblib')
 
 # Entrainement et résultats du modèle Random Forest :
 # model_rf = train_random_forest(X_train, y_train)

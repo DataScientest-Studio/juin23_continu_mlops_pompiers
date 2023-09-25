@@ -1,13 +1,5 @@
 import mysql.connector
 
-# Établissement de la connexion à la base de données
-# connection = mysql.connector.connect(
-#     host="localhost", #A TESTER : '127.0.0.1'
-#     user="root",
-#     password="pompiers",
-#     database="london_fire_brigade"
-# )
-
 connection = mysql.connector.connect(
     host="lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com", # databse hébergée sur serveur AWS
     user="admin",
