@@ -1,4 +1,4 @@
-from src.models.model import mse, mae, r2_lgb, rmse_lgb
+from models.model import mse, mae, r2_lgb, rmse_lgb
 
 import pytest
 

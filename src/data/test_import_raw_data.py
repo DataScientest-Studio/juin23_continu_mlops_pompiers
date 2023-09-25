@@ -1,5 +1,5 @@
-from src.data.import_raw_data import result, columns
-from src.data.config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+from data.import_raw_data import result, columns
+from data.config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 
 import mysql.connector
 import pytest
