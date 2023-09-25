@@ -35,7 +35,7 @@ def convert_data_types(data):
   converted_data[string_cols] = converted_data[string_cols].astype(str)
   encoder = LabelEncoder()
   converted_data[string_cols] = converted_data[string_cols].apply(encoder.fit_transform)
-  dump(encoder, 'label_encoder.joblib') # Enregistrer le label_encoder ajusté aux données d'entrainement.
+  dump(encoder, 'models/label_encoder.joblib') # Enregistrer le label_encoder ajusté aux données d'entrainement.
   return converted_data
 
 def create_and_drop_columns(converted_data):

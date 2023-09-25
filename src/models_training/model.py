@@ -93,7 +93,7 @@ model_lgb = train_lightgbm(X_train, y_train)
 y_pred_lgb = pred_model(model_lgb, X_test)
 mse_lgb, mae_lgb, r2_lgb, rmse_lgb = evaluate_model('Light GBM', y_test, y_pred_lgb)
 
-dump(model_lgb, 'model_lgb.joblib')
+dump(model_lgb, 'models/model_lgb.joblib')
 
 # Entrainement et résultats du modèle Random Forest :
 # model_rf = train_random_forest(X_train, y_train)

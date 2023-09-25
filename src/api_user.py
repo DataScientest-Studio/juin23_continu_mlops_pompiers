@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Header,  Query, Depends
+from fastapi import FastAPI, Depends
 import uvicorn
 import pandas as pd
 
@@ -9,8 +9,8 @@ import datetime
 
 from joblib import load
 
-loaded_model_lgb = load('model_lgb.joblib') # Chargement du modèle entrainé
-encoder = load('label_encoder.joblib') # Chargement du LabelEncoder ajusté aux données d'entrainement
+loaded_model_lgb = load('models/model_lgb.joblib') # Chargement du modèle entrainé
+encoder = load('models/label_encoder.joblib') # Chargement du LabelEncoder ajusté aux données d'entrainement
 
 app = FastAPI(
     title='London Fire Brigade for users',

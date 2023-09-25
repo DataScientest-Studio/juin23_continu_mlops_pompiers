@@ -3,12 +3,12 @@ from data.make_dataset import load_data
 from models_training.model import r2_lgb, rmse_lgb
 from api.users import verify_credentials
 
-from fastapi import FastAPI, Header, HTTPException, Query, status, Depends
+from fastapi import FastAPI, Depends
 import uvicorn
 
 
 api = FastAPI(
-    title='London Fire Brigade',
+    title='London Fire Brigade for admins',
     description='MLOps projects based on the subject "London Fire Brigade Response Time"',
     version="1.0.1",
     openapi_tags=[
