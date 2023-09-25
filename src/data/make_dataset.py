@@ -53,4 +53,3 @@ data_db = load_data(result, columns)
 converted_data = convert_data_types(data_db)
 df = create_and_drop_columns(converted_data)
 
-print(df.info())
