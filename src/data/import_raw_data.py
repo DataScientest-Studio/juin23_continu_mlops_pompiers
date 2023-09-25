@@ -1,6 +1,8 @@
 import mysql.connector
 from decouple import config
 
+
+
 connection = mysql.connector.connect(
     host=DB_HOST,
     user=DB_USER,

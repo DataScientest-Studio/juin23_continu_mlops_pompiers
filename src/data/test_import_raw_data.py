@@ -1,5 +1,15 @@
 from data.import_raw_data import result, columns
-from data.config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+#from data.config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+
+from decouple import config
+
+# Chargez le fichier .env à partir du même répertoire que le script
+config.config('.env')
+
+DB_HOST = config('DB_HOST')
+DB_USER = config('DB_USER')
+DB_PASSWORD = config('DB_PASSWORD')
+DB_NAME = config('DB_NAME')
 
 import mysql.connector
 import pytest
