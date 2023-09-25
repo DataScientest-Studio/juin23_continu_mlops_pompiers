@@ -36,7 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run API_USER
       working-directory: /home/runner/work/juin23_continu_mlops_pompiers/juin23_continu_mlops_pompiers/src/
-      run: uvicorn api_user:api --host 127.0.0.1 --port 8001 &
+      run: uvicorn api_user:app --host 127.0.0.1 --port 8001 &
     - name: Run API_ADMIN
       working-directory: /home/runner/work/juin23_continu_mlops_pompiers/juin23_continu_mlops_pompiers/src/
       run: uvicorn api_admin:api --host 127.0.0.1 --port 8000 &
