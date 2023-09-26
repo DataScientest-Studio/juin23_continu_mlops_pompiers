@@ -81,8 +81,6 @@ def evaluate_model(model_name, y_test, y_pred):
 # Préparation des données :
 X_train, X_test, y_train, y_test, scaler = prepare_data(df)
 
-print(f"colonnes  : {df.drop('AttendanceTimeSeconds', axis=1).columns}")
-
 # Entrainement et résultats du modèle de régression linéaire :
 model_lr = train_linear_reg(X_train, y_train)
 y_pred_lr = pred_model(model_lr, X_test)
