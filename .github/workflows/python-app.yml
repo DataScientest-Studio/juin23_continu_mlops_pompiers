@@ -37,9 +37,6 @@ jobs:
     - name: Run API_USER
       working-directory: /home/runner/work/juin23_continu_mlops_pompiers/juin23_continu_mlops_pompiers/src/
       run: uvicorn api_user:app --host 127.0.0.1 --port 8001 &
-    - name: Run API_ADMIN
-      working-directory: /home/runner/work/juin23_continu_mlops_pompiers/juin23_continu_mlops_pompiers/src/
-      run: uvicorn api_admin:api --host 127.0.0.1 --port 8000 &
     - name: Wait for API to start
       run: sleep 10  # Attendre un certain temps pour que l'API démarre
     - name: Test with pytest
