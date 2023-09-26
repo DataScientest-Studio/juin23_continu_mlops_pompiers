@@ -1,7 +1,14 @@
 import pytest
-import requests
+from fastapi.testclient import TestClient
 
-# Vérification des fonctions de l'API_USER
+from api_user import app
+
+
+client = TestClient(app)
+
+#login : 
+admin = "willy"
+password = "Pompiers2023*"
 
 def test_prediction():
     # Envoyer une requête avec des données valides
@@ -20,9 +27,7 @@ def test_prediction():
         "DelayCodeId": 1,
         "Month": 6
     }
-    response = requests.post('http://127.0.0.1:8001/predict', json=data)
-
-    # Vérifier que la réponse a un code 200 (OK)
+    response = client.post('/predict',auth=(admin, password), json=data)
     assert response.status_code == 200
 
 def test_prediction_invalid_datatypes():
@@ -42,10 +47,6 @@ def test_prediction_invalid_datatypes():
         "DelayCodeId": 1,
         "Month": 6
     }
-    response = requests.post('http://127.0.0.1:8001/predict', json=data)
-
-    # Vérifier que la réponse a un code 200 (OK)
+    response = client.post('/predict',auth=(admin, password), json=data)
     assert response.status_code == 422
 
-
-#TODO : AJOUTER UN TEST SUR L'API_ADMIN POUR VOIR SI TOUT EST OK ? 
