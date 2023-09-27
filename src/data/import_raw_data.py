@@ -1,10 +1,20 @@
 import mysql.connector
 
+from decouple import config
+
+# Chargez le fichier .env à partir du même répertoire que le script
+config.config('.env')
+
+DB_HOST = config('DB_HOST')
+DB_USER = config('DB_USER')
+DB_PASSWORD = config('DB_PASSWORD')
+DB_NAME = config('DB_NAME')
+
 connection = mysql.connector.connect(
-    host="lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com", # databse hébergée sur serveur AWS
-    user="admin",
-    password="pompiers",
-    database="london_fire_brigade"
+        host=DB_HOST
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME
 )
 
 # Création d'un curseur pour exécuter la requête SQL
