@@ -1,17 +1,11 @@
 import mysql.connector
 
-from decouple import config
-
-DB_HOST = config('DB_HOST', default='')
-DB_USER = config('DB_USER', default='')
-DB_PASSWORD = config('DB_PASSWORD', default='')
-DB_NAME = config('DB_NAME', default='')
 
 connection = mysql.connector.connect(
-        host=DB_HOST,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        database=DB_NAME
+        host='lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com',
+        user='admin',
+        password='pompiers',
+        database='london_fire_brigade'
 )
 
 # Création d'un curseur pour exécuter la requête SQL
