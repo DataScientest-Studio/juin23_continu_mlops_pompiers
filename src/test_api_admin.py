@@ -2,13 +2,14 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api_admin import api
+from decouple import config
 
 # Utilisez le client de test FastAPI
 client = TestClient(api)
 
 #login : 
 admin = "admin"
-password = "pompiers"
+password = config('USER_DB_ADMIN')
 
 def test_access_allowed():
     # Fonction de test pour vérifier l'accès autorisé
