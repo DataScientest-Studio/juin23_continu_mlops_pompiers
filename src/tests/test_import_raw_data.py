@@ -15,10 +15,10 @@ DB_NAME = config('DB_NAME', default='')
 def test_database_connection():
   try:
       connection = mysql.connector.connect(
-        host='DB_HOST',
-        user='DB_USER',
-        password='DB_PASSWORD',
-        database='DB_NAME'
+        host='lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com',
+        user='admin',
+        password='pompiers',
+        database='london_fire_brigade'
       )
       assert connection.is_connected() == True
   except mysql.connector.Error as err:
