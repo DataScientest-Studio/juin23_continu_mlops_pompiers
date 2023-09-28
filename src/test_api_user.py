@@ -9,7 +9,7 @@ client = TestClient(app)
 
 #login : 
 admin = "willy"
-password = config('PWD_DB_WILLY')
+password = config('PWD_DB_WILLY', default='')
 
 def test_prediction():
     # Envoyer une requête avec des données valides
