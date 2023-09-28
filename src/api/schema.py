@@ -24,7 +24,7 @@ from datetime import datetime
 current_hour = datetime.now().hour
 current_month = datetime.now().month
 
-new_call = NewCall(
+new_Call = NewCall(
     HourOfCall=current_hour,
     IncGeo_BoroughCode="example",
     IncGeo_WardCode="example",
