@@ -9,7 +9,7 @@ import uvicorn
 
 #login : 
 admin = "admin"
-password = config('PWD_DB_ADMIN')
+password = config('PWD_DB_ADMIN', default='')
 
 security = HTTPBasic()
 
