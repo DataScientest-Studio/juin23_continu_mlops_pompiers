@@ -8,8 +8,8 @@ from decouple import config
 client = TestClient(api)
 
 #login : 
-admin = "admin"
-password = config('PWD_DB_ADMIN', default='')
+admin = "willy"
+password = config('PWD_DB_WILLY', default='')
 
 def test_access_allowed():
     # Fonction de test pour vérifier l'accès autorisé
