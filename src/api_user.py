@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 import uvicorn
 import pandas as pd
 
-from api.schema import NewCall
+from api.schema import newCall
 from api.users import verify_credentials
 from models_training.model import scaler
 import datetime
@@ -50,7 +50,7 @@ async def get_index(current_user: str = Depends(verify_credentials)):
 
 
 @app.post('/predict', tags=['Machine Learning'], name='predictions')
-async def predict(new_call: NewCall):
+async def predict(new_call: newCall):
     """
     Obtenir une prédiction à partir de nouvelles données d'entrée.
     Les données d'entrée doivent être une instance de la class NewCall.
