@@ -21,8 +21,8 @@ class NewCall(BaseModel):
     
 # Créez une instance de NewCall avec l'heure actuelle et le mois actuel
 from datetime import datetime
-current_hour = datetime.now().hour
-current_month = datetime.now().month
+current_hour = int(datetime.now().hour)
+current_month = int(datetime.now().month)
 
 new_Call = NewCall(
     HourOfCall=current_hour,
