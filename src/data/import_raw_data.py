@@ -2,10 +2,10 @@ import mysql.connector
 
 from decouple import config
 
-DB_HOST = config('DB_HOST')
-DB_USER = config('DB_USER')
-DB_PASSWORD = config('DB_PASSWORD')
-DB_NAME = config('DB_NAME')
+DB_HOST = config('DB_HOST', default='')
+DB_USER = config('DB_USER', default='')
+DB_PASSWORD = config('DB_PASSWORD', default='')
+DB_NAME = config('DB_NAME', default='')
 
 connection = mysql.connector.connect(
         host=DB_HOST,
