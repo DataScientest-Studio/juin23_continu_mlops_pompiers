@@ -5,7 +5,6 @@ import pandas as pd
 from api.schema import NewCall
 from api.users import verify_credentials
 from models_training.model import scaler
-import datetime
 
 from joblib import load
 
