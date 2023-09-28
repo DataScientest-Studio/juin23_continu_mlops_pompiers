@@ -7,7 +7,6 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(HTTPBasic()))
     user = credentials.username
     password = credentials.password
     
-    # Chargez les identifiants et les mots de passe à partir des variables d'environnement
     users_db = {
         "willy": config('PWD_DB_WILLY'),
         "djamel": config('PWD_DB_DJAMEL'),
