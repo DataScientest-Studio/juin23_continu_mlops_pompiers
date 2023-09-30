@@ -1,10 +1,11 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 # Créez une instance de NewCall avec l'heure actuelle et le mois actuel
-from datetime import datetime
 current_hour = int(datetime.now().hour)
 current_month = int(datetime.now().month)
+
 
 
 
