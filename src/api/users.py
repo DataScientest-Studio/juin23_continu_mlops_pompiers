@@ -8,11 +8,11 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(HTTPBasic()))
     password = credentials.password
     
     users_db = {
-        "willy": config('PWD_DB_WILLY'),
-        "djamel": config('PWD_DB_DJAMEL'),
-        "jonathan": config('PWD_DB_JONATHAN'),
-        "root": config('PWD_DB_ROOT'),
-        "admin": config('PWD_DB_ADMIN'),
+        "willy": config('PWD_DB_WILLY', default=''),
+        "djamel": config('PWD_DB_DJAMEL', default=''),
+        "jonathan": config('PWD_DB_JONATHAN', default=''),
+        "root": config('PWD_DB_ROOT', default=''),
+        "admin": config('PWD_DB_ADMIN', default=''),
     }
 
     if user in users_db and password == users_db[user]:
