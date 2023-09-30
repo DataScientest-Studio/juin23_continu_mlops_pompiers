@@ -8,6 +8,10 @@ from models_training.model import scaler
 
 from joblib import load
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
+from datetime import datetime
+
 loaded_model_lgb = load('models/model_lgb.joblib') # Chargement du modèle entrainé
 encoder = load('models/label_encoder.joblib') # Chargement du LabelEncoder ajusté aux données d'entrainement
 
@@ -73,6 +77,16 @@ async def predict(new_call: NewCall, current_user: str = Depends(verify_credenti
     return {"prediction": prediction[0]}
 
 
-if __name__ == '__main__':    
-    uvicorn.run(app, host='127.0.0.1', port=8001)
+if __name__ == '__main__':
+    # BackgroundScheduler to run the FastAPI app at the beginning of each hour
+    scheduler = BackgroundScheduler()
 
+    def run_fastapi_app():
+        uvicorn.run(app, host='127.0.0.1', port=8001)
+
+    # Schedule the FastAPI app to run at the start of each hour
+    scheduler.add_job(run_fastapi_app, CronTrigger(hour="*"))
+    scheduler.start()
+
+# Start the FastAPI app directly (outside of any functions)
+    uvicorn.run(app, host='127.0.0.1', port=8001)
