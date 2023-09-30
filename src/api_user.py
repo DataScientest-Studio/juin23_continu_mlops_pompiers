@@ -49,7 +49,7 @@ async def get_index(current_user: str = Depends(verify_credentials)):
 
 
 @app.post('/predict', tags=['Machine Learning'], name='predictions')
-async def predict(new_call: NewCall):
+async def predict(new_call: NewCall, current_user: str = Depends(verify_credentials)):
     """
     Obtenir une prédiction à partir de nouvelles données d'entrée.
     Les données d'entrée doivent être une instance de la class NewCall.
