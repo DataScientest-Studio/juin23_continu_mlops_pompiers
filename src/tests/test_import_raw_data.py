@@ -3,14 +3,6 @@ from data.import_raw_data import result, columns
 import mysql.connector
 import pytest
 
-from decouple import config
-
-
-DB_HOST = config('DB_HOST', default='')
-DB_USER = config('DB_USER', default='')
-DB_PASSWORD = config('DB_PASSWORD', default='')
-DB_NAME = config('DB_NAME', default='')
-
 # Vérifier la connexion à la base de donnée
 def test_database_connection():
   try:
