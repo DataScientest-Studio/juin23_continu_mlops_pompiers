@@ -1,8 +1,9 @@
 import mysql.connector
 #from decouple import config
-import os
+
 from dotenv import load_dotenv
 load_dotenv()
+import os
 
 # Accédez aux variables d'environnement
 DB_HOST = os.environ.get('DB_HOST')
