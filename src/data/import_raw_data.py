@@ -1,11 +1,21 @@
 import mysql.connector
+from decouple import config
+from dotenv import load_dotenv
+load_dotenv()
 
 
+# Accédez aux variables d'environnement
+DB_HOST = config('DB_HOST')
+DB_USER = config('DB_USER')
+DB_PASSWORD = config('DB_PASSWORD')
+DB_DATABASE = config('DB_NAME')
+
+# Utilisez ces valeurs dans votre connexion MySQL
 connection = mysql.connector.connect(
-        host='lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com',
-        user='admin',
-        password='pompiers',
-        database='london_fire_brigade'
+    host=DB_HOST,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    database=DB_DATABASE
 )
 
 # Création d'un curseur pour exécuter la requête SQL
