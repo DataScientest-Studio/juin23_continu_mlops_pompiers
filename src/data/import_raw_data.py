@@ -1,14 +1,15 @@
 import mysql.connector
-from decouple import config
+#from decouple import config
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
-
 # Accédez aux variables d'environnement
-DB_HOST = config('DB_HOST')
-DB_USER = config('DB_USER')
-DB_PASSWORD = config('DB_PASSWORD')
-DB_DATABASE = config('DB_NAME')
+DB_HOST = os.environ.get('DB_HOST')
+DB_USER = os.environ.get('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+DB_DATABASE = os.environ.get('DB_NAME')
+
 
 # Utilisez ces valeurs dans votre connexion MySQL
 connection = mysql.connector.connect(
