@@ -1,9 +1,11 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Response
 import uvicorn
 import pandas as pd
+import math
 
 from api.schema import NewCall
 from api.users import verify_credentials
+from api.fonction import format_time
 from models_training.model import scaler
 
 from joblib import load
@@ -32,15 +34,17 @@ app = FastAPI(
 
 #Dictionnaire des codes d'erreur : 
 responses = {
-    200: {"description": "OK"},
-    401: {"description" : "Veuillez vous identifier"},
-    404: {"description": "Objet introuvable"},
-    403: {"description": "Accès restreint"},
-    406: {"description": "Mauvaise requête"}
+    200: {"description": "Succès"},
+    401: {"description" : "Accès non autorisé"}
 }
 
 
-@app.get('/', tags=['Home'], name='Welcome', responses=responses)
+@app.get('/', include_in_schema=False)
+def check_api():
+    return {"message": "L'API est fonctionnelle"}
+
+
+@app.get('/bienvenue', tags=['Home'], name='Welcome', responses=responses)
 async def get_index(current_user: str = Depends(verify_credentials)):
     """ 
     Message de bienvenue
@@ -48,7 +52,7 @@ async def get_index(current_user: str = Depends(verify_credentials)):
     return {'message': f"Bonjour {current_user}. Bienvenue sur l'API du projet London Fire Brigade for users"}
 
 
-@app.post('/predict', tags=['Machine Learning'], name='predictions')
+@app.post('/predict', tags=['Machine Learning'], name='predictions', responses=responses)
 async def predict(new_call: NewCall, current_user: str = Depends(verify_credentials)):
     """
     Obtenir une prédiction à partir de nouvelles données d'entrée.
@@ -68,10 +72,22 @@ async def predict(new_call: NewCall, current_user: str = Depends(verify_credenti
 
     # Faire une prédiction à partir du modèle :
     prediction = loaded_model_lgb.predict(scaled_data) 
+    prediction_in_seconds = prediction[0]
+    
+    # Arrondir à la minute supérieure
+    rounded_seconds = round(prediction_in_seconds)
+    minutes = math.ceil(rounded_seconds / 60)
+    
+    # Formater le temps en "X mins" (minute supérieure)
+    formatted_time = format_time(minutes)
+    
+    response_text = f"Response time : {formatted_time}"
+
 
     # Retourner la prédiction
-    return {"prediction": prediction[0]}
+    return Response(content=response_text, media_type="text/plain")
 
 
-if __name__ == '__main__':
-       uvicorn.run(app, host='127.0.0.1', port=8001)
+
+if __name__ == '__main__':    
+    uvicorn.run(app, host='127.0.0.1', port=8001)
