@@ -1,7 +1,8 @@
 from data.import_raw_data import result, columns
-from data.make_dataset import load_data
-from models_training.model import r2_lgb, rmse_lgb
+from data.make_dataset import load_data, create_and_drop_columns, convert_data_types
+from models_training.model import evaluate_model, pred_model, train_lightgbm, prepare_data, scale_data, train_random_forest
 from api.users import verify_credentials
+from joblib import dump, load
 
 from fastapi import FastAPI, Depends
 import uvicorn
@@ -55,15 +56,77 @@ async def get_sample(current_user: str = Depends(verify_credentials)):
     """Obtenir les 20 dernières lignes de la base de donnée"""
     return data_db[-10:]
 
-@api.get('/model/metrics/r2', tags=['Machine Learning'], name='Metrics R-squarred')
-async def get_metrics_r2(current_user: str = Depends(verify_credentials)):
-    """Obtenir le score d'évaluation r² du modèle"""
-    return f"R-squared (R²): {r2_lgb}"
 
-@api.get('/model/metrics/rmse', tags=['Machine Learning'], name='Metrics RMSE')
-async def get_metrics_rmse(current_user: str = Depends(verify_credentials)):
-    """Obtenir le score d'évaluation RMSE du modèle"""
-    return f"Root Mean Squared Error (RMSE): {rmse_lgb}"
+@api.get('/model/metrics/lgbm', tags=['Machine Learning'], name='Metrics LightGBM')
+async def get_metrics_lgbm(current_user: str = Depends(verify_credentials)):
+    """Obtenir les scores d'évaluation du modèle LightGBM"""
+    r2_lgb = load('models/r2_lgb.joblib')
+    rmse_lgb = load('models/rmse_lgb.joblib')
+
+    return f"Root Mean Squared Error (RMSE): {rmse_lgb}", f"R-squared (r2) : {r2_lgb}"
+
+@api.get('/model/metrics/rf', tags=['Machine Learning'], name='Metrics Random Forest')
+async def get_metrics_rf(current_user: str = Depends(verify_credentials)):
+    """Obtenir les scores d'évaluation du modèle Random Forest"""
+    r2_rf = load('models/r2_rf.joblib')
+    rmse_rf = load('models/rmse_rf.joblib')
+
+    return f"Root Mean Squared Error (RMSE): {rmse_rf}", f"R-squared (r2) : {r2_rf}"
+
+
+@api.get('/model/training/lgbm', tags=['Machine Learning'], name='Train model LightGBM')
+async def get_train_lgbm(current_user: str = Depends(verify_credentials)):
+    """Entrainer un modèle LightGBM sur les données de la base"""
+
+    # Création du dataframe :
+    data_db_source = load_data(result, columns)
+    converted_data = convert_data_types(data_db_source)
+    df = create_and_drop_columns(converted_data)
+
+    # Préparation des données :
+    X_train, X_test, y_train, y_test = prepare_data(df)
+    X_train_scaled, X_test_scaled = scale_data(X_train, X_test)
+
+    # Entrainement et résultats du modèle Light GBM :
+    model_lgb = train_lightgbm(X_train_scaled, y_train)
+
+    # Enregistrement du modèle :
+    dump(model_lgb, 'models/model_lgb.joblib')
+
+    # Création et enregistrement des métriques :
+    y_pred_lgb = pred_model(model_lgb, X_test_scaled)
+    mse_lgb, mae_lgb, r2_lgb, rmse_lgb = evaluate_model('Light GBM', y_test, y_pred_lgb)
+    dump(r2_lgb, 'models/r2_lgb.joblib')
+    dump(rmse_lgb, 'models/rmse_lgb.joblib')
+
+    return "Le modèle LightGBM a été entrainé."
+
+@api.get('/model/training/rf', tags=['Machine Learning'], name='Train model Random Forest')
+async def get_train_rf(current_user: str = Depends(verify_credentials)):
+    """Entrainer un modèle LightGBM sur les données de la base"""
+
+    # Création du dataframe :
+    data_db_source = load_data(result, columns)
+    converted_data = convert_data_types(data_db_source)
+    df = create_and_drop_columns(converted_data)
+
+    # Préparation des données :
+    X_train, X_test, y_train, y_test = prepare_data(df)
+    X_train_scaled, X_test_scaled = scale_data(X_train, X_test)
+
+    # Entrainement et résultats du modèle Light GBM :
+    model_rf = train_random_forest(X_train_scaled, y_train)
+
+    # Enregistrement du modèle :
+    dump(model_rf, 'models/model_rf.joblib')
+
+    # Création et enregistrement des métriques :
+    y_pred_rf = pred_model(model_rf, X_test_scaled)
+    mse_rf, mae_rf, r2_rf, rmse_rf = evaluate_model('Random Forest', y_test, y_pred_rf)
+    dump(r2_rf, 'models/r2_rf.joblib')
+    dump(rmse_rf, 'models/rmse_rf.joblib')
+
+    return "Le modèle RandomForest a été entrainé."
 
 
 if __name__ == "__main__":
