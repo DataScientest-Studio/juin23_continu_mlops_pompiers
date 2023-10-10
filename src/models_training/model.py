@@ -73,3 +73,12 @@ def evaluate_model(model_name, y_test, y_pred):
     mae = mean_absolute_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
     rmse = np.sqrt(mse)
+       
+    # Affichage des métriques
+    print(f"Métriques du modèle {model_name}:")
+    print("Mean Squared Error (MSE): ", mse)
+    print("Mean Absolute Error (MAE): ", mae)
+    print("R-squared (R²): ", r2)
+    print("Root Mean Squared Error (RMSE): ", rmse)
+
+    return mse, mae, r2, rmse
