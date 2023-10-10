@@ -1,6 +1,8 @@
-from models_training.model import mse_lgb, mae_lgb, r2_lgb, rmse_lgb
-
+from joblib import load
 import pytest
+
+r2_lgb = load('models/r2_lgb.joblib')
+rmse_lgb = load('models/rmse_lgb.joblib')
 
 # Vérification de la performance du modèle LGBM
 def test_r2():
