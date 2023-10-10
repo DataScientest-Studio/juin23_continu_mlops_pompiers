@@ -34,3 +34,4 @@ def test_get_columns():
     response = client.get("/data/columns", auth=(admin, password))
     assert response.status_code == 200
     assert len(response.json()) == 14
+

@@ -4,13 +4,8 @@ import pandas as pd
 
 from api.schema import NewCall
 from api.users import verify_credentials
-from models_training.model import scaler
-import datetime
 
 from joblib import load
-
-loaded_model_lgb = load('models/model_lgb.joblib') # Chargement du modèle entrainé
-encoder = load('models/label_encoder.joblib') # Chargement du LabelEncoder ajusté aux données d'entrainement
 
 app = FastAPI(
     title='London Fire Brigade for users',
@@ -55,6 +50,10 @@ async def predict(new_call: NewCall):
     Obtenir une prédiction à partir de nouvelles données d'entrée.
     Les données d'entrée doivent être une instance de la class NewCall.
     """
+    loaded_model_lgb = load('models/model_lgb.joblib') # Chargement du modèle entrainé
+    encoder = load('models/label_encoder.joblib') # Chargement du LabelEncoder ajusté aux données d'entrainement
+    scaler = load('models/scaler_fitted.joblib') # Chargement du MinMaxScaler ajusté aux données d'entrainement
+    
     # Extraire les données
     input_data = pd.DataFrame([new_call.model_dump()])
     
