@@ -104,7 +104,7 @@ async def get_train_lgbm(credentials: HTTPBasicCredentials = Depends(verify_cred
 
 @api.get('/model/training/rf', tags=['Machine Learning'], name='Train model Random Forest')
 async def get_train_rf(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
-    """Entrainer un modèle LightGBM sur les données de la base"""
+    """Entrainer un modèle RandomForest sur les données de la base"""
 
     # Création du dataframe :
     data_db_source = load_data(result, columns)
