@@ -10,7 +10,9 @@ client = TestClient(api)
 
 #login : 
 admin = "admin"
-password = config('PWD_DB_ADMIN', default='')
+#password = config('PWD_DB_ADMIN', default='')
+password = "pompiers"
+
 
 def test_access_allowed():
     # Fonction de test pour vérifier l'accès autorisé
