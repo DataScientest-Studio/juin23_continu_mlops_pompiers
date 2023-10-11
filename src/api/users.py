@@ -44,32 +44,31 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(HTTPBasic()))
         
         
     
-    # Fonction pour la vérification de l'identifiant et mot de passe de l'administrateur.
-    def verify_credentials_admin(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
-        user = credentials.username
-        password = credentials.password
+# Fonction pour la vérification de l'identifiant et mot de passe de l'administrateur.
+def verify_credentials_admin(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
+    user = credentials.username
+    password = credentials.password
 
-        if not user or not password:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Veuillez vous identifier en fournissant un identifiant et un mot de passe valides",
-                headers={"WWW-Authenticate": "Basic"},
-            )
+    if not user or not password:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Veuillez vous identifier en fournissant un identifiant et un mot de passe valides",
+            headers={"WWW-Authenticate": "Basic"},
+        )
 
-        if user == "admin":
-            stored_password = users_db.get(user)
-            if stored_password and password == stored_password:
-                return user
-            else:
-                raise HTTPException(
-                        status_code=status.HTTP_403_FORBIDDEN,
-                        detail="Accès refusé. Vous devez être un administrateur.",
-                        headers={"WWW-Authenticate": "Basic"},
-                    )
+    if user == "admin":
+        stored_password = users_db.get(user)
+        if stored_password and password == stored_password:
+            return user
         else:
             raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Non autorisé. Mauvais mot de passe",
-                    headers={"WWW-Authenticate": "Basic"},
-                )
-   
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Non autorisé. Mauvais mot de passe",
+                headers={"WWW-Authenticate": "Basic"},
+            )
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Accès refusé. Vous devez être un administrateur.",
+            headers={"WWW-Authenticate": "Basic"},
+        )
