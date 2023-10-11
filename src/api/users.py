@@ -51,7 +51,7 @@ def verify_credentials_admin(credentials: HTTPBasicCredentials = Depends(HTTPBas
 
     if not user or not password:
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Veuillez vous identifier en fournissant un identifiant et un mot de passe valides",
             headers={"WWW-Authenticate": "Basic"},
         )
@@ -63,13 +63,13 @@ def verify_credentials_admin(credentials: HTTPBasicCredentials = Depends(HTTPBas
                 return user
             else:
                 raise HTTPException(
-                    status_code=403,
+                    status_code=status.HTTP_403_FORBIDDEN,
                     detail="Accès refusé. Vous devez être un administrateur.",
                     headers={"WWW-Authenticate": "Basic"},
                 )
         else:
             raise HTTPException(
-                status_code=401,
+                status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Non autorisé. Mauvais mot de passe",
                 headers={"WWW-Authenticate": "Basic"},
             )
