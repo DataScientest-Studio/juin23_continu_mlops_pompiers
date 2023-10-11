@@ -56,10 +56,17 @@ def verify_credentials_admin(credentials: HTTPBasicCredentials = Depends(HTTPBas
             headers={"WWW-Authenticate": "Basic"},
         )
 
-    if user == "admin":
-        stored_password = users_db.get(user)
-        if stored_password and password == stored_password:
-            return user
+    if user in users_db:
+        stored_password = users_db[user]
+        if password == stored_password:
+            if user == "admin":  # Vérification de l'utilisateur admin
+                return user
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Accès refusé. Vous devez être un administrateur.",
+                    headers={"WWW-Authenticate": "Basic"},
+                )
         else:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -68,7 +75,7 @@ def verify_credentials_admin(credentials: HTTPBasicCredentials = Depends(HTTPBas
             )
     else:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Accès refusé. Vous devez être un administrateur.",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Non Autorisé. Mauvais identifiant",
             headers={"WWW-Authenticate": "Basic"},
         )
