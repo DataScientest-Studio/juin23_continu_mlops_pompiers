@@ -20,7 +20,7 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(HTTPBasic()))
 
     if not user or not password:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=401,
             detail="Veuillez vous identifier en fournissant un identifiant et un mot de passe valides",
             headers={"WWW-Authenticate": "Basic"},
         )
@@ -31,13 +31,13 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(HTTPBasic()))
             return user
         else:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
+                status_code=401,
                 detail="Non autorisé. Mauvais mot de passe",
                 headers={"WWW-Authenticate": "Basic"},
             )
     else:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=401,
             detail="Non Autorisé. Mauvais identifiant",
             headers={"WWW-Authenticate": "Basic"},
         )
