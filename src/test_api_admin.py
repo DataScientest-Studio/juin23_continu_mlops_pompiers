@@ -15,8 +15,8 @@ password = config('PWD_DB_ADMIN', default='')
 def test_access_allowed():
     # Fonction de test pour vérifier l'accès autorisé
     response = client.get("/", auth=(admin, password))
-    assert response.json() == {"message": "Bonjour admin. Bienvenue sur l'API du projet London Fire Brigade"}
     assert response.status_code == 200
+    assert response.json() == {"message": "Bonjour admin. Bienvenue sur l'API du projet London Fire Brigade"}
 
 
 def test_access_denied():
