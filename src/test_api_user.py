@@ -8,7 +8,7 @@ from decouple import config
 client = TestClient(app)
 
 #login : 
-admin = "willy"
+user = "willy"
 password = config('PWD_DB_WILLY', default='')
 
 def test_prediction():
@@ -28,7 +28,7 @@ def test_prediction():
         "DelayCodeId": 1,
         "Month": 6
     }
-    response = client.post('/predict',auth=(admin, password), json=data)
+    response = client.post('/predict',auth=(user, password), json=data)
     assert response.status_code == 200
 
 def test_prediction_invalid_datatypes():
@@ -48,6 +48,6 @@ def test_prediction_invalid_datatypes():
         "DelayCodeId": 1,
         "Month": 6
     }
-    response = client.post('/predict',auth=(admin, password), json=data)
+    response = client.post('/predict',auth=(user, password), json=data)
     assert response.status_code == 422
 
