@@ -14,10 +14,10 @@ DB_DATABASE = os.environ.get('DB_NAME')
 
 # Utilisez ces valeurs dans votre connexion MySQL
 connection = mysql.connector.connect(
-    host=DB_HOST,
-    user=DB_USER,
-    password=DB_PASSWORD,
-    database=DB_DATABASE
+    host="lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com", # databse hébergée sur serveur AWS
+    user="admin",
+    password="pompiers",
+    database="london_fire_brigade"
 )
 
 # Création d'un curseur pour exécuter la requête SQL
