@@ -42,7 +42,11 @@ responses = {
     406: {"description": "Mauvaise requête"}
 }
 
-@api.get('/', tags=['Home'], name='Welcome', responses=responses)
+@api.get('/', include_in_schema=False)
+def check_api():
+    return {"message": "L'API est fonctionnelle"}
+
+@api.get('/Welcome', tags=['Home'], name='Welcome', responses=responses)
 async def get_index(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """ Message de bienvenue
     """
