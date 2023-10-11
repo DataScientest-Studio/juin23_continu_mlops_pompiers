@@ -2,6 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api_admin import api
+import base64
 
 # Utilisez le client de test FastAPI
 client = TestClient(api)
@@ -9,12 +10,11 @@ client = TestClient(api)
 
 #login : 
 admin = "admin"
-password = "cG9tcGllcnM="
-
+password_base64 = "cG9tcGllcnM="
 
 def test_access_allowed():
     # Fonction de test pour vérifier l'accès autorisé
-    response = client.get("/", auth=(admin, password))
+    response = client.get("/", auth=(admin, base64.b64decode(password_base64).decode()))
     assert response.status_code == 200
     assert response.json() == {"message": "Bonjour admin. Bienvenue sur l'API du projet London Fire Brigade"}
 
@@ -26,13 +26,13 @@ def test_access_denied():
 
 def test_get_sample():
     # Test du point de terminaison `/data/sample`
-    response = client.get("/data/sample", auth=(admin, password))
+    response = client.get("/data/sample", auth=(admin, base64.b64decode(password_base64).decode()))
     assert response.status_code == 200
     assert len(response.json()) == 10
 
 
 def test_get_columns():
     # Fonction de test pour vérifier la récupération des colonnes
-    response = client.get("/data/columns", auth=(admin, password))
+    response = client.get("/data/columns", auth=(admin, base64.b64decode(password_base64).decode()))
     assert response.status_code == 200
     assert len(response.json()) == 14
