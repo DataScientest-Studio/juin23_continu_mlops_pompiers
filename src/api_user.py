@@ -52,7 +52,7 @@ async def get_index(current_user: str = Depends(verify_credentials)):
 
 
 @app.post('/predict', tags=['Machine Learning'], name='predictions')
-async def predict(new_call: NewCall):
+async def predict(new_call: NewCall, current_user: str = Depends(verify_credentials)):
     """
     Obtenir une prédiction à partir de nouvelles données d'entrée.
     Les données d'entrée doivent être une instance de la class NewCall.
@@ -76,9 +76,22 @@ async def predict(new_call: NewCall):
     # Faire une prédiction à partir du modèle :
     prediction = loaded_model_lgb.predict(scaled_data) 
 
-    # Retourner la prédiction
-    return {"prediction": prediction[0]}
+    # Faire une prédiction à partir du modèle :
+    prediction = loaded_model_lgb.predict(scaled_data) 
+    prediction_in_seconds = prediction[0]
 
+    # Arrondir à la minute supérieure
+    rounded_seconds = round(prediction_in_seconds)
+    minutes = math.ceil(rounded_seconds / 60)
+
+    # Formater le temps en "X mins" (minute supérieure)
+    formatted_time = format_time(minutes)
+
+    response_text = f"Response time : {formatted_time}"
+
+
+    # Retourner la prédiction
+    return Response(content=response_text, media_type="text/plain")
 
 if __name__ == '__main__':    
     uvicorn.run(app, host='127.0.0.1', port=8001)
