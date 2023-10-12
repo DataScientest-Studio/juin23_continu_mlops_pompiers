@@ -38,6 +38,10 @@ responses = {
 }
 
 
+@app.get('/', include_in_schema=False)
+def check_api():
+    return {"message": "L'API est fonctionnelle"}
+
 @app.get('/', tags=['Home'], name='Welcome', responses=responses)
 async def get_index(current_user: str = Depends(verify_credentials)):
     """ 
