@@ -9,6 +9,7 @@ connection = mysql.connector.connect(
     database="london_fire_brigade"
 )
 
+
 # Création d'un curseur pour exécuter la requête SQL
 cursor = connection.cursor()
 
