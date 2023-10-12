@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Depends
 import uvicorn
 import pandas as pd
+from decouple import config
+import boto3
 
 from api.schema import NewCall
 from api.users import verify_credentials
@@ -22,8 +24,8 @@ app = FastAPI(
     }]
     )
 
-
-
+# Login USER pour download sur AWS S3 :
+s3_client = boto3.client('s3',region_name='eu-west-3', aws_access_key_id=config('USER_AWS_KEY_ID'), aws_secret_access_key=config('USER_AWS_KEY'))
 
 
 #Dictionnaire des codes d'erreur : 
@@ -50,6 +52,11 @@ async def predict(new_call: NewCall):
     Obtenir une prédiction à partir de nouvelles données d'entrée.
     Les données d'entrée doivent être une instance de la class NewCall.
     """
+    # Download des fichiers entrainés depuis AWS S3
+    s3_client.download_file(Bucket=config('BUCKET'), Key='lightgbm/model_lgb.joblib', Filename='models/model_lgb.joblib')
+    s3_client.download_file(Bucket=config('BUCKET'), Key='label_encoder.joblib', Filename='models/label_encoder.joblib')
+    s3_client.download_file(Bucket=config('BUCKET'), Key='scaler_fitted.joblib', Filename='models/scaler_fitted.joblib')
+    
     loaded_model_lgb = load('models/model_lgb.joblib') # Chargement du modèle entrainé
     encoder = load('models/label_encoder.joblib') # Chargement du LabelEncoder ajusté aux données d'entrainement
     scaler = load('models/scaler_fitted.joblib') # Chargement du MinMaxScaler ajusté aux données d'entrainement

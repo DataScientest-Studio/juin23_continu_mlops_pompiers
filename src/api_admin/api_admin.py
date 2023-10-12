@@ -3,6 +3,8 @@ from data.make_dataset import load_data, create_and_drop_columns, convert_data_t
 from models_training.model import evaluate_model, pred_model, train_lightgbm, prepare_data, scale_data, train_random_forest
 from api.users import verify_credentials
 from joblib import dump, load
+from decouple import config
+import boto3
 
 from fastapi import FastAPI, Depends
 import uvicorn
@@ -27,6 +29,8 @@ api = FastAPI(
     }]
     )
 
+# Login pour download ou upload sur AWS S3 :
+s3_client = boto3.client('s3',region_name='eu-west-3', aws_access_key_id=config('ADMIN_AWS_KEY_ID'), aws_secret_access_key=config('ADMIN_AWS_KEY'))
 
 # Chargement de la base de donnée et conversion au format dictionnaire :
 data_db = load_data(result, columns).to_dict(orient='records')
@@ -60,14 +64,26 @@ async def get_sample(current_user: str = Depends(verify_credentials)):
 @api.get('/model/metrics/lgbm', tags=['Machine Learning'], name='Metrics LightGBM')
 async def get_metrics_lgbm(current_user: str = Depends(verify_credentials)):
     """Obtenir les scores d'évaluation du modèle LightGBM"""
+    
+    s3_client.download_file(Bucket=config('BUCKET'), Key='lightgbm/r2_lgb.joblib', Filename='models/r2_lgb.joblib')
     r2_lgb = load('models/r2_lgb.joblib')
+
+    s3_client.download_file(Bucket=config('BUCKET'), Key='lightgbm/rmse_lgb.joblib', Filename='models/rmse_lgb.joblib')
     rmse_lgb = load('models/rmse_lgb.joblib')
 
     return f"Root Mean Squared Error (RMSE): {rmse_lgb}", f"R-squared (r2) : {r2_lgb}"
 
+
 @api.get('/model/metrics/rf', tags=['Machine Learning'], name='Metrics Random Forest')
 async def get_metrics_rf(current_user: str = Depends(verify_credentials)):
     """Obtenir les scores d'évaluation du modèle Random Forest"""
+
+    s3_client.download_file(Bucket=config('BUCKET'), Key='randomforest/r2_rf.joblib', Filename='models/r2_rf.joblib')
+    r2_lgb = load('models/r2_rf.joblib')
+
+    s3_client.download_file(Bucket=config('BUCKET'), Key='randomforest/rmse_rf.joblib', Filename='models/rmse_rf.joblib')
+    rmse_lgb = load('models/rmse_rf.joblib')
+
     r2_rf = load('models/r2_rf.joblib')
     rmse_rf = load('models/rmse_rf.joblib')
 
@@ -92,12 +108,17 @@ async def get_train_lgbm(current_user: str = Depends(verify_credentials)):
 
     # Enregistrement du modèle :
     dump(model_lgb, 'models/model_lgb.joblib')
+    s3_client.upload_file(Filename='models/model_lgb.joblib', Bucket=config('BUCKET'), Key='lightgbm/model_lgb.joblib')
 
-    # Création et enregistrement des métriques :
+    # Calcul des métriques : 
     y_pred_lgb = pred_model(model_lgb, X_test_scaled)
     mse_lgb, mae_lgb, r2_lgb, rmse_lgb = evaluate_model('Light GBM', y_test, y_pred_lgb)
+
+    # Enregistrement des métriques :
     dump(r2_lgb, 'models/r2_lgb.joblib')
+    s3_client.upload_file(Filename='models/r2_lgb.joblib', Bucket=config('BUCKET'), Key='lightgbm/r2_lgb.joblib')
     dump(rmse_lgb, 'models/rmse_lgb.joblib')
+    s3_client.upload_file(Filename='models/rmse_lgb.joblib', Bucket=config('BUCKET'), Key='lightgbm/rmse_lgb.joblib')
 
     return "Le modèle LightGBM a été entrainé."
 
@@ -119,12 +140,17 @@ async def get_train_rf(current_user: str = Depends(verify_credentials)):
 
     # Enregistrement du modèle :
     dump(model_rf, 'models/model_rf.joblib')
+    s3_client.upload_file(Filename='models/model_rf.joblib', Bucket=config('BUCKET'), Key='randomforest/model_rf.joblib')
 
-    # Création et enregistrement des métriques :
+    # Calcul des métriques :
     y_pred_rf = pred_model(model_rf, X_test_scaled)
     mse_rf, mae_rf, r2_rf, rmse_rf = evaluate_model('Random Forest', y_test, y_pred_rf)
+
+    # Enregistrement des métriques :
     dump(r2_rf, 'models/r2_rf.joblib')
+    s3_client.upload_file(Filename='models/r2_rf.joblib', Bucket=config('BUCKET'), Key='randomforest/model_rf.joblib')
     dump(rmse_rf, 'models/rmse_rf.joblib')
+    s3_client.upload_file(Filename='models/rmse_rf.joblib', Bucket=config('BUCKET'), Key='randomforest/model_rf.joblib')
 
     return "Le modèle RandomForest a été entrainé."
 

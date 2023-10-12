@@ -1,4 +1,4 @@
-from data.import_raw_data import result, columns
+from data.import_raw_data import columns
 
 import mysql.connector
 import pytest
