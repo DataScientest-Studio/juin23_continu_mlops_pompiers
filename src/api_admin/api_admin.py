@@ -149,9 +149,9 @@ async def get_train_rf(credentials: HTTPBasicCredentials = Depends(verify_creden
 
     # Enregistrement des métriques :
     dump(r2_rf, 'models/r2_rf.joblib')
-    s3_client.upload_file(Filename='models/r2_rf.joblib', Bucket=config('BUCKET'), Key='randomforest/model_rf.joblib')
+    s3_client.upload_file(Filename='models/r2_rf.joblib', Bucket=config('BUCKET'), Key='randomforest/r2_rf.joblib')
     dump(rmse_rf, 'models/rmse_rf.joblib')
-    s3_client.upload_file(Filename='models/rmse_rf.joblib', Bucket=config('BUCKET'), Key='randomforest/model_rf.joblib')
+    s3_client.upload_file(Filename='models/rmse_rf.joblib', Bucket=config('BUCKET'), Key='randomforest/rmse_rf.joblib')
 
     return "Le modèle RandomForest a été entrainé."
 
