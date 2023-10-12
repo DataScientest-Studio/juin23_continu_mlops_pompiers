@@ -36,7 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Launch docker compose
       run: |
-        docker compose up
+        docker compose up -d
     - name: Test with pytest
       run: |
         pytest -v
