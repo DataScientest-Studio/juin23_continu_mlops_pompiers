@@ -1,12 +1,13 @@
 from data.import_raw_data import result, columns
 from data.make_dataset import load_data, create_and_drop_columns, convert_data_types
 from models_training.model import evaluate_model, pred_model, train_lightgbm, prepare_data, scale_data, train_random_forest
-from api.users import verify_credentials
+from api.users import verify_credentials_admin
 from joblib import dump, load
 from decouple import config
 import boto3
 
-from fastapi import FastAPI, Depends
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import FastAPI, Depends, HTTPException, status
 import uvicorn
 
 
@@ -45,24 +46,24 @@ responses = {
 }
 
 @api.get('/', tags=['Home'], name='Welcome', responses=responses)
-async def get_index(current_user: str = Depends(verify_credentials)):
+async def get_index(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """ Message de bienvenue
     """
-    return {'message': f"Bonjour {current_user}. Bienvenue sur l'API du projet London Fire Brigade"}
+    return {'message': f"Bonjour admin. Bienvenue sur l'API du projet London Fire Brigade"}
 
 @api.get('/data/columns', tags=['DataBase'], name='All Columns')
-async def get_columns(current_user: str = Depends(verify_credentials)):
+async def get_columns(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """Obtenir les colonnes du dataset"""
     return columns
 
 @api.get('/data/sample', tags=['DataBase'], name='Sample')
-async def get_sample(current_user: str = Depends(verify_credentials)):
+async def get_sample(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """Obtenir les 20 dernières lignes de la base de donnée"""
     return data_db[-10:]
 
 
 @api.get('/model/metrics/lgbm', tags=['Machine Learning'], name='Metrics LightGBM')
-async def get_metrics_lgbm(current_user: str = Depends(verify_credentials)):
+async def get_metrics_lgbm(current_user: str = Depends(verify_credentials_admin)):
     """Obtenir les scores d'évaluation du modèle LightGBM"""
     
     s3_client.download_file(Bucket=config('BUCKET'), Key='lightgbm/r2_lgb.joblib', Filename='models/r2_lgb.joblib')
@@ -75,7 +76,7 @@ async def get_metrics_lgbm(current_user: str = Depends(verify_credentials)):
 
 
 @api.get('/model/metrics/rf', tags=['Machine Learning'], name='Metrics Random Forest')
-async def get_metrics_rf(current_user: str = Depends(verify_credentials)):
+async def get_metrics_rf(current_user: str = Depends(verify_credentials_admin)):
     """Obtenir les scores d'évaluation du modèle Random Forest"""
 
     s3_client.download_file(Bucket=config('BUCKET'), Key='randomforest/r2_rf.joblib', Filename='models/r2_rf.joblib')
@@ -91,7 +92,7 @@ async def get_metrics_rf(current_user: str = Depends(verify_credentials)):
 
 
 @api.get('/model/training/lgbm', tags=['Machine Learning'], name='Train model LightGBM')
-async def get_train_lgbm(current_user: str = Depends(verify_credentials)):
+async def get_train_lgbm(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """Entrainer un modèle LightGBM sur les données de la base"""
 
     # Création du dataframe :
@@ -123,7 +124,7 @@ async def get_train_lgbm(current_user: str = Depends(verify_credentials)):
     return "Le modèle LightGBM a été entrainé."
 
 @api.get('/model/training/rf', tags=['Machine Learning'], name='Train model Random Forest')
-async def get_train_rf(current_user: str = Depends(verify_credentials)):
+async def get_train_rf(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """Entrainer un modèle LightGBM sur les données de la base"""
 
     # Création du dataframe :

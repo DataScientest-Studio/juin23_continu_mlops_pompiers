@@ -2,14 +2,19 @@ from data.import_raw_data import columns
 
 import mysql.connector
 import pytest
+from decouple import config
+
+#login : 
+admin = "admin"
+password = config('PWD_DB_ADMIN', default='')
 
 # Vérifier la connexion à la base de donnée
 def test_database_connection():
   try:
       connection = mysql.connector.connect(
         host="lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com", # databse hébergée sur serveur AWS
-        user="admin",
-        password="pompiers",
+        user=admin,
+        password=password,
         database="london_fire_brigade"
       )
       assert connection.is_connected() == True
