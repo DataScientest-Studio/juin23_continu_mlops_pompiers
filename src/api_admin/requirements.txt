@@ -39,5 +39,5 @@ threadpoolctl==3.2.0
 tomli==2.0.1
 typing_extensions==4.7.1
 tzdata==2023.3
-urllib3==2.0.6
+urllib3==2.0.5
 uvicorn==0.23.2

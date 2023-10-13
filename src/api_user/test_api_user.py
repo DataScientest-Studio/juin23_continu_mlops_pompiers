@@ -2,13 +2,13 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api_user import app
-
+from decouple import config
 
 client = TestClient(app)
 
 #login : 
 admin = "willy"
-password = "Pompiers2023*"
+password = config('PWD_DB_WILLY', default='')
 
 def test_prediction():
     # Envoyer une requête avec des données valides

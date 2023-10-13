@@ -1,7 +1,10 @@
 from data.import_raw_data import result, columns
 import pandas as pd
 from joblib import dump
+import boto3
+from decouple import config
 from sklearn.preprocessing import LabelEncoder
+
 
 
 # Chargement des données dans un dataframe :
@@ -36,6 +39,11 @@ def convert_data_types(data):
   encoder = LabelEncoder()
   converted_data[string_cols] = converted_data[string_cols].apply(encoder.fit_transform)
   dump(encoder, 'models/label_encoder.joblib') # Enregistrer le label_encoder ajusté aux données d'entrainement.
+
+  # Upload du fichier enregistré vers AWS S3
+  s3_client = boto3.client('s3',region_name='eu-west-3', aws_access_key_id=config('ADMIN_AWS_KEY_ID'), aws_secret_access_key=config('ADMIN_AWS_KEY'))
+  s3_client.upload_file(Filename='models/label_encoder.joblib', Bucket=config('BUCKET'), Key='label_encoder.joblib')
+
   return converted_data
 
 def create_and_drop_columns(converted_data):
