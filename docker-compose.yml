@@ -1,0 +1,29 @@
+#!/bin/bash
+
+version: '3.8'
+
+services:
+  api_admin:
+    image: willymaillot87/pompiers_admin-api:latest
+    ports:
+      - "8002:8002"
+    networks:
+      - mynetwork
+    volumes:
+      - ./requirements.txt:/app/requirements.txt
+    env_file:
+      - env.txt
+
+  api_user:
+    image: willymaillot87/pompiers_user-api:latest
+    ports:
+      - "8001:8001"
+    networks:
+      - mynetwork
+    volumes:
+      - ./requirements.txt:/app/requirements.txt
+    env_file:
+      - env.txt
+
+networks:
+  mynetwork:
