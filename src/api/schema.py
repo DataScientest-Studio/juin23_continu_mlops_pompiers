@@ -6,9 +6,6 @@ from datetime import datetime
 current_hour = int(datetime.now().hour)
 current_month = int(datetime.now().month)
 
-
-
-
 # Classe new_call pour faire une prédiction.
 class NewCall(BaseModel):
     HourOfCall: int = current_hour  #Time Automation
