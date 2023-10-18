@@ -25,7 +25,7 @@ app = FastAPI(
     )
 
 # Login USER pour download sur AWS S3 :
-s3_client = boto3.client('s3',region_name=config('AWS_S3_REGION'), aws_access_key_id=config('AWS_ADMIN_KEY_ID'), aws_secret_access_key=config('AWS_ADMIN_KEY'))
+s3_client = boto3.client('s3',region_name=config('AWS_S3_REGION'), aws_access_key_id=config('AWS_USER_KEY_ID'), aws_secret_access_key=config('AWS_USER_KEY'))
 
 
 #Dictionnaire des codes d'erreur : 
