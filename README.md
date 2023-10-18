@@ -86,11 +86,20 @@ In this context, it would be beneficial for the brigade, especially for the call
 
 ------------
 
+Data
+------------
+
+For the completion of this project, we utilized the data from these two datasets: <a target="_blank" href="https://data.london.gov.uk/dataset/london-fire-brigade-incident-records">LFB's data for incidents </a> and <a target="_blank" href="https://data.london.gov.uk/dataset/london-fire-brigade-incident-records">LFB's data for mobilisations </a>.</small></p>
+
+These data are provided to us by The London Datastore which is  a free and open data-sharing portal where anyone can access data relating to the capital of London. 
+
+------------
 
 Application Operation
 ------------
 
 **APIs :**
+
 The application consists of two APIs built with FastAPI:
 - API User :
 The User API is available on port 8001.
@@ -106,14 +115,17 @@ It allows the admin to
     - get metrics for a model
 
 **Amazon AWS :**
+
 The application uses Amazon AWS cloud services, including : 
 - RDS : For the MySQL database
 - S3 : To store various models, metrics, label encoders fitted to training data, and Min/Max scalers fitted to training data.
 
 **Airflow :**
+
 The admin has access to the Airflow interface, where DAGs allow regular model evaluation and training on new data.
 
 **Streamlit :**
+
 A Streamlit interface has been created for the user to facilitate testing of the application.
 
 ------------
