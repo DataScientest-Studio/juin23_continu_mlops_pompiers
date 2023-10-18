@@ -1,10 +1,11 @@
 import mysql.connector
+from decouple import config
 
 connection = mysql.connector.connect(
-    host="lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com", # databse hébergée sur serveur AWS
-    user="admin",
-    password="pompiers",
-    database="london_fire_brigade"
+    host=config('DB_HOST'), # databse hébergée sur serveur AWS
+    user=config('DB_USER'),
+    password=config('DB_PASSWORD'),
+    database=config('DB_NAME')
 )
 
 # Création d'un curseur pour exécuter la requête SQL
