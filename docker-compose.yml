@@ -13,25 +13,25 @@ services:
       - ./requirements.txt:/app/requirements.txt
     environment:
       #DataBase AWS RDS :
-      - DB_HOST=${{ secrets.DB_HOST }}
-      - DB_USER=${{ secrets.DB_USER }}
-      - DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-      - DB_NAME=${{ secrets.DB_NAME }}
+      - DB_HOST: ${{ secrets.DB_HOST }}
+      - DB_USER: ${{ secrets.DB_USER }}
+      - DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      - DB_NAME: ${{ secrets.DB_NAME }}
 
       #Auth API :
-      - PWD_DB_WILLY=${{ secrets.PWD_DB_WILLY }}
-      - PWD_DB_DJAMEL=${{ secrets.PWD_DB_DJAMEL }}
-      - PWD_DB_JONATHAN=${{ secrets.PWD_DB_JONATHAN }}
-      - PWD_DB_ROOT=${{ secrets.PWD_DB_ROOT }}
-      - PWD_DB_ADMIN=${{ secrets.PWD_DB_ADMIN }}
+      - PWD_DB_WILLY: ${{ secrets.PWD_DB_WILLY }}
+      - PWD_DB_DJAMEL: ${{ secrets.PWD_DB_DJAMEL }}
+      - PWD_DB_JONATHAN: ${{ secrets.PWD_DB_JONATHAN }}
+      - PWD_DB_ROOT: ${{ secrets.PWD_DB_ROOT }}
+      - PWD_DB_ADMIN: ${{ secrets.PWD_DB_ADMIN }}
 
       #AWS S3 : 
-      - AWS_ADMIN_KEY_ID=${{ secrets.AWS_ADMIN_KEY_ID }} 
-      - AWS_ADMIN_KEY=${{ secrets.AWS_ADMIN_KEY }} 
-      - AWS_USER_KEY_ID=${{ secrets.AWS_USER_KEY_ID }} 
-      - AWS_USER_KEY=${{ secrets.AWS_USER_KEY }} 
-      - AWS_S3_REGION=${{ secrets.AWS_S3_REGION }} 
-      - AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }} 
+      - AWS_ADMIN_KEY_ID: ${{ secrets.AWS_ADMIN_KEY_ID }} 
+      - AWS_ADMIN_KEY: ${{ secrets.AWS_ADMIN_KEY }} 
+      - AWS_USER_KEY_ID: ${{ secrets.AWS_USER_KEY_ID }} 
+      - AWS_USER_KEY: ${{ secrets.AWS_USER_KEY }} 
+      - AWS_S3_REGION: ${{ secrets.AWS_S3_REGION }} 
+      - AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }} 
 
   api_user:
     image: willymaillot87/pompiers_user-api:latest
@@ -43,25 +43,25 @@ services:
       - ./requirements.txt:/app/requirements.txt
     environment:
       #DataBase AWS RDS :
-      - DB_HOST=${{ secrets.DB_HOST }}
-      - DB_USER=${{ secrets.DB_USER }}
-      - DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-      - DB_NAME=${{ secrets.DB_NAME }}
+      - DB_HOST: ${{ secrets.DB_HOST }}
+      - DB_USER: ${{ secrets.DB_USER }}
+      - DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      - DB_NAME: ${{ secrets.DB_NAME }}
 
       #Auth API :
-      - PWD_DB_WILLY=${{ secrets.PWD_DB_WILLY }}
-      - PWD_DB_DJAMEL=${{ secrets.PWD_DB_DJAMEL }}
-      - PWD_DB_JONATHAN=${{ secrets.PWD_DB_JONATHAN }}
-      - PWD_DB_ROOT=${{ secrets.PWD_DB_ROOT }}
-      - PWD_DB_ADMIN=${{ secrets.PWD_DB_ADMIN }}
+      - PWD_DB_WILLY: ${{ secrets.PWD_DB_WILLY }}
+      - PWD_DB_DJAMEL: ${{ secrets.PWD_DB_DJAMEL }}
+      - PWD_DB_JONATHAN: ${{ secrets.PWD_DB_JONATHAN }}
+      - PWD_DB_ROOT: ${{ secrets.PWD_DB_ROOT }}
+      - PWD_DB_ADMIN: ${{ secrets.PWD_DB_ADMIN }}
 
       #AWS S3 : 
-      - AWS_ADMIN_KEY_ID=${{ secrets.AWS_ADMIN_KEY_ID }} 
-      - AWS_ADMIN_KEY=${{ secrets.AWS_ADMIN_KEY }} 
-      - AWS_USER_KEY_ID=${{ secrets.AWS_USER_KEY_ID }} 
-      - AWS_USER_KEY=${{ secrets.AWS_USER_KEY }} 
-      - AWS_S3_REGION=${{ secrets.AWS_S3_REGION }} 
-      - AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }} 
+      - AWS_ADMIN_KEY_ID: ${{ secrets.AWS_ADMIN_KEY_ID }} 
+      - AWS_ADMIN_KEY: ${{ secrets.AWS_ADMIN_KEY }} 
+      - AWS_USER_KEY_ID: ${{ secrets.AWS_USER_KEY_ID }} 
+      - AWS_USER_KEY: ${{ secrets.AWS_USER_KEY }} 
+      - AWS_S3_REGION: ${{ secrets.AWS_S3_REGION }} 
+      - AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }} 
 
 networks:
   mynetwork:
