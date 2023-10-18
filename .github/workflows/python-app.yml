@@ -19,10 +19,10 @@ jobs:
 
     env:
       #DataBase AWS RDS :
-      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_HOST: ${{ vars.DB_HOST }}
       DB_USER: ${{ secrets.DB_USER }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_NAME: ${{ vars.DB_NAME }}
 
       #Auth API :
       PWD_DB_WILLY: ${{ secrets.PWD_DB_WILLY }}
@@ -36,8 +36,8 @@ jobs:
       AWS_ADMIN_KEY: ${{ secrets.AWS_ADMIN_KEY }} 
       AWS_USER_KEY_ID: ${{ secrets.AWS_USER_KEY_ID }} 
       AWS_USER_KEY: ${{ secrets.AWS_USER_KEY }} 
-      AWS_S3_REGION: ${{ secrets.AWS_S3_REGION }} 
-      AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }} 
+      AWS_S3_REGION: ${{ vars.AWS_S3_REGION }} 
+      AWS_S3_BUCKET_NAME: ${{ vars.AWS_S3_BUCKET_NAME }} 
 
     steps:
     - uses: actions/checkout@v3
