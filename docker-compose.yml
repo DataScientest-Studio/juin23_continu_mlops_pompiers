@@ -11,8 +11,22 @@ services:
       - mynetwork
     volumes:
       - ./requirements.txt:/app/requirements.txt
-    env_file:
-      - env.txt
+    environment:
+      DB_HOST: $DB_HOST
+      DB_USER: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
+      DB_NAME: $DB_NAME
+      PWD_DB_WILLY: $PWD_DB_WILLY
+      PWD_DB_DJAMEL: $PWD_DB_DJAMEL
+      PWD_DB_JONATHAN: $PWD_DB_JONATHAN
+      PWD_DB_ROOT: $PWD_DB_ROOT
+      PWD_DB_ADMIN: $PWD_DB_ADMIN
+      AWS_ADMIN_KEY_ID: $AWS_ADMIN_KEY_ID
+      AWS_ADMIN_KEY: $AWS_ADMIN_KEY 
+      AWS_USER_KEY_ID: $AWS_USER_KEY_ID 
+      AWS_USER_KEY: $AWS_USER_KEY 
+      AWS_S3_REGION: $AWS_S3_REGION 
+      AWS_S3_BUCKET_NAME: $AWS_S3_BUCKET_NAME 
 
   api_user:
     image: willymaillot87/pompiers_user-api:latest
@@ -22,8 +36,22 @@ services:
       - mynetwork
     volumes:
       - ./requirements.txt:/app/requirements.txt
-    env_file:
-      - env.txt
+    environment:
+      DB_HOST: $DB_HOST
+      DB_USER: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
+      DB_NAME: $DB_NAME
+      PWD_DB_WILLY: $PWD_DB_WILLY
+      PWD_DB_DJAMEL: $PWD_DB_DJAMEL
+      PWD_DB_JONATHAN: $PWD_DB_JONATHAN
+      PWD_DB_ROOT: $PWD_DB_ROOT
+      PWD_DB_ADMIN: $PWD_DB_ADMIN
+      AWS_ADMIN_KEY_ID: $AWS_ADMIN_KEY_ID
+      AWS_ADMIN_KEY: $AWS_ADMIN_KEY 
+      AWS_USER_KEY_ID: $AWS_USER_KEY_ID 
+      AWS_USER_KEY: $AWS_USER_KEY 
+      AWS_S3_REGION: $AWS_S3_REGION 
+      AWS_S3_BUCKET_NAME: $AWS_S3_BUCKET_NAME 
 
 networks:
   mynetwork:

@@ -41,8 +41,8 @@ def convert_data_types(data):
   dump(encoder, 'models/label_encoder.joblib') # Enregistrer le label_encoder ajusté aux données d'entrainement.
 
   # Upload du fichier enregistré vers AWS S3
-  s3_client = boto3.client('s3',region_name='eu-west-3', aws_access_key_id=config('ADMIN_AWS_KEY_ID'), aws_secret_access_key=config('ADMIN_AWS_KEY'))
-  s3_client.upload_file(Filename='models/label_encoder.joblib', Bucket=config('BUCKET'), Key='label_encoder.joblib')
+  s3_client = boto3.client('s3',region_name=config('AWS_S3_REGION'), aws_access_key_id=config('AWS_ADMIN_KEY_ID'), aws_secret_access_key=config('AWS_ADMIN_KEY'))
+  s3_client.upload_file(Filename='models/label_encoder.joblib', Bucket=config('AWS_S3_BUCKET_NAME'), Key='label_encoder.joblib')
 
   return converted_data
 

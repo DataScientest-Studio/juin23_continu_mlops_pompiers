@@ -8,7 +8,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-
+ 
 permissions:
   contents: read
 
@@ -16,6 +16,28 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    env:
+      #DataBase AWS RDS :
+      DB_HOST: ${{ vars.DB_HOST }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ vars.DB_NAME }}
+
+      #Auth API :
+      PWD_DB_WILLY: ${{ secrets.PWD_DB_WILLY }}
+      PWD_DB_DJAMEL: ${{ secrets.PWD_DB_DJAMEL }}
+      PWD_DB_JONATHAN: ${{ secrets.PWD_DB_JONATHAN }}
+      PWD_DB_ROOT: ${{ secrets.PWD_DB_ROOT }}
+      PWD_DB_ADMIN: ${{ secrets.PWD_DB_ADMIN }}
+
+      #Bucket AWS S3 : 
+      AWS_ADMIN_KEY_ID: ${{ secrets.AWS_ADMIN_KEY_ID }} 
+      AWS_ADMIN_KEY: ${{ secrets.AWS_ADMIN_KEY }} 
+      AWS_USER_KEY_ID: ${{ secrets.AWS_USER_KEY_ID }} 
+      AWS_USER_KEY: ${{ secrets.AWS_USER_KEY }} 
+      AWS_S3_REGION: ${{ vars.AWS_S3_REGION }} 
+      AWS_S3_BUCKET_NAME: ${{ vars.AWS_S3_BUCKET_NAME }} 
 
     steps:
     - uses: actions/checkout@v3
