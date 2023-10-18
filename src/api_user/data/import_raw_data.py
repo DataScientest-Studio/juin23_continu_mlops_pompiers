@@ -1,4 +1,5 @@
 import mysql.connector
+from decouple import config
 
 connection = mysql.connector.connect(
     host=config('DB_HOST'), # databse hébergée sur serveur AWS
