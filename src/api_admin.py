@@ -35,14 +35,14 @@ data_db = load_data(result, columns).to_dict(orient='records')
 
 #Dictionnaire des codes d'erreur : 
 responses = {
-    200: {"description": "Succès"},
-    401: {"description" : "Veuillez vous identifier"},
-    404: {"description": "Objet introuvable"},
-    403: {"description": "Accès restreint"},
-    406: {"description": "Mauvaise requête"}
+    "200": {"description": "Succès"},
+    "400": {"description": "Mauvaise requête"},
+    "401": {"description" : "Veuillez vous identifier"},
+    "404": {"description": "Objet introuvable"},
+    "403": {"description": "Accès restreint"}
 }
 
-@api.get('/', tags=['Home'], name='Welcome', responses=responses)
+@api.get('/', tags=['Home'], name='Welcome', responses={401: responses})
 async def get_index(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """ Message de bienvenue
     """
