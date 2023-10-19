@@ -33,8 +33,8 @@ def scale_data(X_train, X_test) :
     dump(scaler, 'models/scaler_fitted.joblib') # Enregistrer le scaler MinMaxScaler() ajusté aux données d'entrainement.
 
     # Upload du fichier enregistré vers AWS S3
-    s3_client = boto3.client('s3',region_name='eu-west-3', aws_access_key_id=config('ADMIN_AWS_KEY_ID'), aws_secret_access_key=config('ADMIN_AWS_KEY'))
-    s3_client.upload_file(Filename='models/scaler_fitted.joblib', Bucket=config('BUCKET'), Key='scaler_fitted.joblib')
+    s3_client = boto3.client('s3',region_name=config('AWS_S3_REGION'), aws_access_key_id=config('AWS_ADMIN_KEY_ID'), aws_secret_access_key=config('AWS_ADMIN_KEY'))
+    s3_client.upload_file(Filename='models/scaler_fitted.joblib', Bucket=config('AWS_S3_BUCKET_NAME'), Key='scaler_fitted.joblib')
 
     return X_train_scaled, X_test_scaled
 

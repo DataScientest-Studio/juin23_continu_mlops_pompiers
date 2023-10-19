@@ -12,11 +12,12 @@ password = config('PWD_DB_ADMIN', default='')
 def test_database_connection():
   try:
       connection = mysql.connector.connect(
-        host="lfb-project-db.cxwvi9sp2ptx.eu-north-1.rds.amazonaws.com", # databse hébergée sur serveur AWS
-        user=admin,
-        password=password,
-        database="london_fire_brigade"
+      host=config('DB_HOST'), # databse hébergée sur serveur AWS
+      user=config('DB_USER'),
+      password=config('DB_PASSWORD'),
+      database=config('DB_NAME')
       )
+      
       assert connection.is_connected() == True
   except mysql.connector.Error as err:
       pytest.fail(f"Erreur de connexion à la base de données : {err}")

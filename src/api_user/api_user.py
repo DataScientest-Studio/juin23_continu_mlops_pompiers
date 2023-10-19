@@ -25,7 +25,7 @@ app = FastAPI(
     )
 
 # Login USER pour download sur AWS S3 :
-s3_client = boto3.client('s3',region_name='eu-west-3', aws_access_key_id=config('USER_AWS_KEY_ID'), aws_secret_access_key=config('USER_AWS_KEY'))
+s3_client = boto3.client('s3',region_name=config('AWS_S3_REGION'), aws_access_key_id=config('AWS_USER_KEY_ID'), aws_secret_access_key=config('AWS_USER_KEY'))
 
 
 #Dictionnaire des codes d'erreur : 
@@ -57,9 +57,9 @@ async def predict(new_call: NewCall):
     Les données d'entrée doivent être une instance de la class NewCall.
     """
     # Download des fichiers entrainés depuis AWS S3
-    s3_client.download_file(Bucket=config('BUCKET'), Key='lightgbm/model_lgb.joblib', Filename='models/model_lgb.joblib')
-    s3_client.download_file(Bucket=config('BUCKET'), Key='label_encoder.joblib', Filename='models/label_encoder.joblib')
-    s3_client.download_file(Bucket=config('BUCKET'), Key='scaler_fitted.joblib', Filename='models/scaler_fitted.joblib')
+    s3_client.download_file(Bucket=config('AWS_S3_BUCKET_NAME'), Key='lightgbm/model_lgb.joblib', Filename='models/model_lgb.joblib')
+    s3_client.download_file(Bucket=config('AWS_S3_BUCKET_NAME'), Key='label_encoder.joblib', Filename='models/label_encoder.joblib')
+    s3_client.download_file(Bucket=config('AWS_S3_BUCKET_NAME'), Key='scaler_fitted.joblib', Filename='models/scaler_fitted.joblib')
     
     loaded_model_lgb = load('models/model_lgb.joblib') # Chargement du modèle entrainé
     encoder = load('models/label_encoder.joblib') # Chargement du LabelEncoder ajusté aux données d'entrainement
