@@ -89,6 +89,7 @@ target/
 .mypy_cache/
 
 # My Virtual Envs
+linuxenv3/
 linuxenv2/
 linuxenv/
 
