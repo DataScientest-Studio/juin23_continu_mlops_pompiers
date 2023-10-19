@@ -49,12 +49,12 @@ def check_api():
     return {"message": "L'API est fonctionnelle"}
 
 
-@app.get('/bienvenue', tags=['Home'], name='Welcome', responses={401: responses["401"]})
+@app.post('/bienvenue', tags=['Home'], name='Welcome', responses={401: responses["401"]})
 async def get_index(current_user: str = Depends(verify_credentials)):
     """ 
     Message de bienvenue
     """
-    return {'message': f"Bonjour {current_user}. Bienvenue sur l'API du projet London Fire Brigade for users"}
+    return {'message': f"Bonjour {current_user}. Bienvenue sur le projet London Fire Brigade"}
 
 
 
