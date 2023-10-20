@@ -1,5 +1,5 @@
 from data.import_raw_data import result, columns
-from data.make_dataset import load_data, create_and_drop_columns, convert_data_types
+from data.make_dataset import load_data, transform_dataframe, encode_dataframe
 from models_training.model import evaluate_model, pred_model, train_lightgbm, prepare_data, scale_data, train_random_forest
 from api.users import verify_credentials_admin
 from joblib import dump, load
@@ -98,8 +98,8 @@ async def get_train_lgbm(credentials: HTTPBasicCredentials = Depends(verify_cred
 
     # Création du dataframe :
     data_db_source = load_data(result, columns)
-    converted_data = convert_data_types(data_db_source)
-    df = create_and_drop_columns(converted_data)
+    working_dataframe = transform_dataframe(data_db_source)
+    df = encode_dataframe(working_dataframe)
 
     # Préparation des données :
     X_train, X_test, y_train, y_test = prepare_data(df)
@@ -130,8 +130,8 @@ async def get_train_rf(credentials: HTTPBasicCredentials = Depends(verify_creden
 
     # Création du dataframe :
     data_db_source = load_data(result, columns)
-    converted_data = convert_data_types(data_db_source)
-    df = create_and_drop_columns(converted_data)
+    working_dataframe = transform_dataframe(data_db_source)
+    df = encode_dataframe(working_dataframe)
 
     # Préparation des données :
     X_train, X_test, y_train, y_test = prepare_data(df)
