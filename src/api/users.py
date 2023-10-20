@@ -16,9 +16,9 @@ users_db = {
 def verify_credentials(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
     user = credentials.username
     password = credentials.password
+ 
     
-
-    if not user or not password:
+    if not user and not password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Veuillez vous identifier en fournissant un identifiant et un mot de passe valides",
