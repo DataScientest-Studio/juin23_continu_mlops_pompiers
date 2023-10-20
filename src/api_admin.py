@@ -3,6 +3,7 @@ from data.make_dataset import load_data, create_and_drop_columns, convert_data_t
 from models_training.model import evaluate_model, pred_model, train_lightgbm, prepare_data, scale_data, train_random_forest
 from api.users import verify_credentials_admin
 from joblib import dump, load
+import random
 
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -36,48 +37,56 @@ data_db = load_data(result, columns).to_dict(orient='records')
 #Dictionnaire des codes d'erreur : 
 responses = {
     "200": {"description": "Succès"},
-    "400": {"description": "Mauvaise requête"},
-    "401": {"description" : "Veuillez vous identifier"},
-    "404": {"description": "Objet introuvable"},
-    "403": {"description": "Accès restreint"}
+    "400": {"description": "Mauvaise requête. Problème de données."},
+    "401": {"description": "Veuillez vous connecter avec des identifiants valides "},
+    "403": {"description": "Accès restreint. Seul l'administrateur est autorisé à se connecter."},
+    "422": {"description": "Entité non traitable"},
+    "500": {"description": "Erreur interne du serveur"}
 }
 
-@api.get('/', tags=['Home'], name='Welcome', responses={401: responses})
+@api.get('/', tags=['Home'], name='Welcome', 
+         responses={200: responses["200"], 401: responses["401"], 403: responses["403"], 500: responses["500"]})
 async def get_index(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """ Message de bienvenue
     """
     return {'message': f"Bonjour admin. Bienvenue sur l'API du projet London Fire Brigade"}
     
 
-@api.get('/data/columns', tags=['DataBase'], name='All Columns')
+@api.get('/data/columns', tags=['DataBase'], name='All Columns', 
+         responses={200: responses["200"], 401: responses["401"], 403: responses["403"], 500: responses["500"]})
 async def get_columns(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
     """Obtenir les colonnes du dataset"""
     return columns
 
-@api.get('/data/sample', tags=['DataBase'], name='Sample')
+@api.get('/data/sample', tags=['DataBase'], name='Sample', responses=responses)
 async def get_sample(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
-    """Obtenir les 20 dernières lignes de la base de donnée"""
-    return data_db[-10:]
+    """Obtenir un sample aléatoire de 10 lignes de la base de donnée"""
+    random_10 = random.sample(data_db, 10)
+    return random_10
 
-@api.get('/model/metrics/lgbm', tags=['Machine Learning'], name='Metrics LightGBM')
+@api.get('/model/metrics/lgbm', tags=['Machine Learning'], name='Metrics LightGBM', 
+         responses={200: responses["200"], 401: responses["401"], 403: responses["403"], 422: responses["422"], 500: responses["500"]})
 async def get_metrics_lgbm(current_user: str = Depends(verify_credentials_admin)):
     """Obtenir les scores d'évaluation du modèle LightGBM"""
     r2_lgb = load('models/r2_lgb.joblib')
     rmse_lgb = load('models/rmse_lgb.joblib')
+    mae_lgb = load('models/mae_lgb.joblib')
+    
+    return f"Root Mean Squared Error (RMSE): {rmse_lgb}", f"R-squared (r2) : {r2_lgb}", f"Mean Absolute Error (MAE): {mae_lgb}"
 
-    return f"Root Mean Squared Error (RMSE): {rmse_lgb}", f"R-squared (r2) : {r2_lgb}"
-
-@api.get('/model/metrics/rf', tags=['Machine Learning'], name='Metrics Random Forest')
+@api.get('/model/metrics/rf', tags=['Machine Learning'], name='Metrics Random Forest', 
+         responses={200: responses["200"], 401: responses["401"], 403: responses["403"], 422: responses["422"], 500: responses["500"]})
 async def get_metrics_rf(current_user: str = Depends(verify_credentials_admin)):
     """Obtenir les scores d'évaluation du modèle Random Forest"""
     r2_rf = load('models/r2_rf.joblib')
     rmse_rf = load('models/rmse_rf.joblib')
+    mae_rf = load('models/mae_rf.joblib')
 
-    return f"Root Mean Squared Error (RMSE): {rmse_rf}", f"R-squared (r2) : {r2_rf}"
+    return f"Root Mean Squared Error (RMSE): {rmse_rf}", f"R-squared (r2) : {r2_rf}", f"Mean Absolute Error (MAE): {mae_rf}"
 
-@api.get('/model/training/lgbm', tags=['Machine Learning'], name='Train model LightGBM')
+@api.get('/model/training/lgbm', tags=['Machine Learning'], name='Train model LightGBM', responses=responses)
 async def get_train_lgbm(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
-    """Entrainer un modèle LightGBM sur les données de la base"""
+    """Entrainer un modèle LightGBM avec les données de la base"""
 
     # Création du dataframe :
     data_db_source = load_data(result, columns)
@@ -99,12 +108,14 @@ async def get_train_lgbm(credentials: HTTPBasicCredentials = Depends(verify_cred
     mse_lgb, mae_lgb, r2_lgb, rmse_lgb = evaluate_model('Light GBM', y_test, y_pred_lgb)
     dump(r2_lgb, 'models/r2_lgb.joblib')
     dump(rmse_lgb, 'models/rmse_lgb.joblib')
-
+    dump(mae_lgb, 'models/mae_lgb.joblib')
+    
     return "Le modèle LightGBM a été entrainé."
 
-@api.get('/model/training/rf', tags=['Machine Learning'], name='Train model Random Forest')
+@api.get('/model/training/rf', tags=['Machine Learning'], name='Train model Random Forest', 
+         responses=responses)
 async def get_train_rf(credentials: HTTPBasicCredentials = Depends(verify_credentials_admin)):
-    """Entrainer un modèle RandomForest sur les données de la base"""
+    """Entrainer un modèle RandomForest avec les données de la base"""
 
     # Création du dataframe :
     data_db_source = load_data(result, columns)
@@ -126,6 +137,8 @@ async def get_train_rf(credentials: HTTPBasicCredentials = Depends(verify_creden
     mse_rf, mae_rf, r2_rf, rmse_rf = evaluate_model('Random Forest', y_test, y_pred_rf)
     dump(r2_rf, 'models/r2_rf.joblib')
     dump(rmse_rf, 'models/rmse_rf.joblib')
+    dump(mae_rf, 'models/mae_rf.joblib')
+    
 
     return "Le modèle RandomForest a été entrainé."
 
