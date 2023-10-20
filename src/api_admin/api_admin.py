@@ -36,6 +36,7 @@ s3_client = boto3.client('s3',region_name=config('AWS_S3_REGION'), aws_access_ke
 # Chargement de la base de donnée et conversion au format dictionnaire :
 data_db = load_data(result, columns).to_dict(orient='records')
 
+
 #Dictionnaire des codes d'erreur : 
 responses = {
     200: {"description": "OK"},

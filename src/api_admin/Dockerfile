@@ -9,6 +9,8 @@ WORKDIR /app
 # Créer le répertoire 'models' pour enregistrer les fichiers .joblib :
 RUN mkdir /app/models 
 
+COPY requirements.txt /app/requirements.txt
+
 # Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 
