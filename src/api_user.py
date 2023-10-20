@@ -49,7 +49,7 @@ def check_api():
     return {"message": "L'API est fonctionnelle"}
 
 
-@app.post('/bienvenue', tags=['Home'], name='Welcome', responses={401: responses["401"]})
+@app.post('/bienvenue', tags=['Home'], name='Welcome', responses={401: responses["401"], 500: responses["500"]})
 async def get_index(current_user: str = Depends(verify_credentials)):
     """ 
     Message de bienvenue
@@ -58,7 +58,8 @@ async def get_index(current_user: str = Depends(verify_credentials)):
 
 
 
-@app.post('/predict', tags=['Machine Learning'], name='predictions', responses={400: responses["400"],401: responses["401"], 422: responses["422"]})
+@app.post('/predict', tags=['Machine Learning'], name='predictions', responses={400: responses["400"],401: responses["401"], 
+                                                                                422: responses["422"], 500: responses["500"]})
 async def predict(new_call: NewCall, current_user: str = Depends(verify_credentials)):
     """
     Obtenir une prédiction à partir de nouvelles données d'entrée.
