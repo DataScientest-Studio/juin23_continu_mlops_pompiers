@@ -19,9 +19,9 @@ def load_data(result, columns) :
 # CONVERTIR LES TYPES DE DONNEES AU FORMAT APPROPRIE
 def transform_dataframe(data_db):
   '''
-  Converti les données pour n'obtenir que des variables numériques dans le dataframe. 
+  Transforme le dataframe pour obtenir les bonnes colonnes au bon format.
   '''
-  working_dataframe = data_db
+  working_dataframe = data_db.copy()
 
   # Format date
   working_dataframe['DateOfCall'] = pd.to_datetime(working_dataframe['DateOfCall'])
@@ -45,19 +45,19 @@ def encode_dataframe(working_dataframe):
   Le LabelEncoder ajusté aux données est ensuite chargé dans le bucket S3 de Amazon AWS.
   '''
 
+  df = working_dataframe.copy()
+
   # Encodage des variables qui ont des valeurs sous forme de chaines de caractère
   string_cols = ['IncGeo_BoroughCode', 'IncGeo_WardCode', 'IncidentStationGround']
-  working_dataframe[string_cols] = working_dataframe[string_cols].astype(str)
+  df[string_cols] = df[string_cols].astype(str)
   encoder = LabelEncoder()
-  working_dataframe[string_cols] = working_dataframe[string_cols].apply(encoder.fit_transform)
+  df[string_cols] = df[string_cols].apply(encoder.fit_transform)
   dump(encoder, 'models/label_encoder.joblib') # Enregistrer le label_encoder ajusté aux données d'entrainement.
 
   # Upload du fichier label_encoder vers AWS S3
   s3_client = boto3.client('s3',region_name=config('AWS_S3_REGION'), aws_access_key_id=config('AWS_ADMIN_KEY_ID'), aws_secret_access_key=config('AWS_ADMIN_KEY'))
   s3_client.upload_file(Filename='models/label_encoder.joblib', Bucket=config('AWS_S3_BUCKET_NAME'), Key='label_encoder.joblib')
   
-  df = working_dataframe
-
   return df
 
 
@@ -66,6 +66,6 @@ data_db = load_data(result, columns)
 working_dataframe = transform_dataframe(data_db)
 df = encode_dataframe(working_dataframe)
 
+print(f"data_db : \n {data_db}")
 print(f"working_dataframe : \n {working_dataframe.head()}")
 print(f"df : \n {df.head()}")
-

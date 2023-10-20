@@ -21,7 +21,7 @@ def transform_dataframe(data_db):
   '''
   Transforme le dataframe pour obtenir les bonnes colonnes au bon format.
   '''
-  working_dataframe = data_db
+  working_dataframe = data_db.copy()
 
   # Format date
   working_dataframe['DateOfCall'] = pd.to_datetime(working_dataframe['DateOfCall'])
@@ -45,7 +45,7 @@ def encode_dataframe(working_dataframe):
   Le LabelEncoder ajusté aux données est ensuite chargé dans le bucket S3 de Amazon AWS.
   '''
 
-  df = working_dataframe
+  df = working_dataframe.copy()
 
   # Encodage des variables qui ont des valeurs sous forme de chaines de caractère
   string_cols = ['IncGeo_BoroughCode', 'IncGeo_WardCode', 'IncidentStationGround']
@@ -66,6 +66,6 @@ data_db = load_data(result, columns)
 working_dataframe = transform_dataframe(data_db)
 df = encode_dataframe(working_dataframe)
 
-print(f"data_db : {data_db}")
+print(f"data_db : \n {data_db}")
 print(f"working_dataframe : \n {working_dataframe.head()}")
 print(f"df : \n {df.head()}")
