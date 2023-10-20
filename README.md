@@ -42,10 +42,6 @@ Project Organization
         │   │   ├── import_raw_data.py
         │   │   ├── __init__.py
         │   │   ├── make_dataset.py
-        │   │   └── __pycache__
-        │   │       ├── import_raw_data.cpython-310.pyc
-        │   │       ├── __init__.cpython-310.pyc
-        │   │       └── make_dataset.cpython-310.pyc
         │   ├── Dockerfile
         │   ├── models_training
         │   │   ├── __init__.py
@@ -57,6 +53,7 @@ Project Organization
         │       └── test_model.py
         └── api_user
             ├── api
+            │   ├── fonction.py
             │   ├── __init__.py
             │   ├── schema.py
             │   └── users.py
@@ -64,7 +61,8 @@ Project Organization
             ├── data
             │   ├── import_raw_data.py
             │   ├── __init__.py
-            │   └── make_dataset.py
+            │   ├── make_dataset.py
+            │   └── working_dataframe.py
             ├── Dockerfile
             ├── models_training
             │   ├── __init__.py
