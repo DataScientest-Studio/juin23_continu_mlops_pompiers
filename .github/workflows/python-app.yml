@@ -65,6 +65,7 @@ jobs:
     - name: Launch docker compose
       run: |
         docker compose up -d
+        sleep 10
     - name: Close docker compose
       run: |
         docker compose down
