@@ -62,7 +62,6 @@ Project Organization
             │   ├── import_raw_data.py
             │   ├── __init__.py
             │   ├── make_dataset.py
-            │   └── working_dataframe.py
             ├── Dockerfile
             ├── models_training
             │   ├── __init__.py
