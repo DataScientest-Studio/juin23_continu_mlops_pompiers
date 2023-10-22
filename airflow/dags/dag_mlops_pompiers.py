@@ -38,12 +38,13 @@ def pred_model(model, X_test):
     '''
     Obtenir les prédictions du modèle
     '''
-    y_pred = model.predict(X_test)
+    y_pred = mode
+    l.predict(X_test)
     return y_pred
 
 # Configuration du DAG
 default_args = {
-    'owner': 'MLOps Datascientest,
+    'owner': 'MLOps Datascientest',
     'depends_on_past': False,
     'start_date': datetime(2023, 10, 1),
     'retries': 1,
