@@ -30,7 +30,6 @@ Project Organization
     │   │   └── Mobilisations Metadata.xlsx
     │   └── Prédiction du temps de réponse des pompiers.docx
     ├── requirements.txt
-    ├── setup.py
     └── src
         ├── api_admin
         │   ├── api
@@ -62,7 +61,6 @@ Project Organization
             │   ├── import_raw_data.py
             │   ├── __init__.py
             │   ├── make_dataset.py
-            │   └── working_dataframe.py
             ├── Dockerfile
             ├── models_training
             │   ├── __init__.py
