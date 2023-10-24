@@ -21,3 +21,30 @@ working_dataframe = working_dataframe.drop('DateOfCall', axis=1)
 colonnes_a_convertir= ["HourOfCall", "Easting_rounded", "Northing_rounded", "NumStationsWithPumpsAttending", 
                        "NumPumpsAttending", "PumpCount","PumpHoursRoundUp", "PumpOrder", "DelayCodeId", "AttendanceTimeSeconds"]
 working_dataframe[colonnes_a_convertir] = working_dataframe[colonnes_a_convertir].astype(int)
+
+
+
+
+count_empty_values = (working_dataframe['IncGeo_WardCode'] == '').sum()
+print(f"Nombre de valeurs vides dans la colonne 'IncGeo_WardCode': {count_empty_values}")
+
+
+count_empty_values = (working_dataframe['IncidentStationGround'] == '').sum()
+print(f"Nombre de valeurs vides dans la colonne 'IncidentStationGround': {count_empty_values}")
+
+# Sélectionnez les lignes où 'IncGeo_WardCode' est vide
+empty_ward_code_rows = working_dataframe.loc[working_dataframe['IncGeo_WardCode'] == '']
+
+# Affichez ces lignes
+print("Lignes avec 'IncGeo_WardCode' vide:")
+print(empty_ward_code_rows)
+
+
+# Sélectionnez les lignes où 'IncidentStationGround' est vide
+empty_station_ground_rows = working_dataframe.loc[working_dataframe['IncidentStationGround'] == '']
+
+# Affichez ces lignes
+print("Lignes avec 'IncidentStationGround' vide:")
+print(empty_station_ground_rows)
+
+print(working_dataframe.shape)
