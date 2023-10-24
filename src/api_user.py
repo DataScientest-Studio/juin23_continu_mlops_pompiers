@@ -7,7 +7,7 @@ import math
 from data.working_dataframe import working_dataframe
 from api.schema import NewCall
 from api.users import verify_credentials
-from api.fonction import format_time
+from api.fonction import format_time, format_real_time, generate_auth_token
 
 from joblib import load
 
@@ -54,7 +54,13 @@ async def get_index(current_user: str = Depends(verify_credentials)):
     """ 
     Message de bienvenue
     """
-    return {'message': f"Bonjour {current_user}. Bienvenue sur le projet London Fire Brigade"}
+    # Authentification réussie
+    user = current_user
+
+    # Générez le token d'authentification
+    auth_token = generate_auth_token(user)
+    
+    return {'message': f"Bonjour {current_user}. Bienvenue sur le projet London Fire Brigade", 'auth_token': auth_token}
 
 
 
@@ -96,17 +102,27 @@ async def predict(new_call: NewCall, current_user: str = Depends(verify_credenti
     # Arrondir à la minute supérieure
     rounded_seconds = round(prediction_in_seconds)
     minutes = math.ceil(rounded_seconds / 60)
+    minutes_real= rounded_seconds // 60
+    seconds = rounded_seconds % 60
 
     # Formater le temps en "X mins" (minute supérieure)
     formatted_time = format_time(minutes)
-
-    response_text = f"Response time : {formatted_time}"
+    
+    formatted_real_time = format_real_time(minutes_real, seconds)
         
-    # Retourner la prédiction
-    return Response(content=response_text, media_type="text/plain")
+    
+
+    response_text = f"Estimated response time : {formatted_time}, (Real response time : {formatted_real_time})"
+
+    # Créez une réponse personnalisée avec l'auth_token dans les en-têtes
+    response = Response(content=response_text, media_type="text/plain")
+        
+    return response
 
     
 if __name__ == '__main__':    
     uvicorn.run(app, host='127.0.0.1', port=8001)
+    
+    
     
     
