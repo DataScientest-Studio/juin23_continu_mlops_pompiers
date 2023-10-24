@@ -33,6 +33,7 @@ RIGHT JOIN mobilisation m ON i.IncidentNumber = m.IncidentNumber
 WHERE i.DateOfCall IS NOT NULL AND i.PumpHoursRoundUp IS NOT NULL
 """
 
+
 # Exécution de la requête SELECT
 cursor.execute(select_query)
 columns = [column[0] for column in cursor.description]

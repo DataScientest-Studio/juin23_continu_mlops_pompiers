@@ -23,7 +23,6 @@ connection.commit()
 
 # Requête SELECT pour récupérer les données
 select_query = """
-SELECT
     i.DateOfCall, i.HourOfCall, i.IncGeo_BoroughCode, i.IncGeo_WardCode,
     i.Easting_rounded, i.Northing_rounded, i.IncidentStationGround,
     i.NumStationsWithPumpsAttending, i.NumPumpsAttending, i.PumpCount, i.PumpHoursRoundUp,
