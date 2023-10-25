@@ -42,9 +42,3 @@ print(empty_ward_code_rows)
 
 # Sélectionnez les lignes où 'IncidentStationGround' est vide
 empty_station_ground_rows = working_dataframe.loc[working_dataframe['IncidentStationGround'] == '']
-
-# Affichez ces lignes
-print("Lignes avec 'IncidentStationGround' vide:")
-print(empty_station_ground_rows)
-
-print(working_dataframe.shape)
