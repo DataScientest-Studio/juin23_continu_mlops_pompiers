@@ -129,7 +129,7 @@ A Streamlit interface has been created for the user to facilitate testing of the
 Project Diagram
 ------------
 
-insérer ici l'image du schéma
+![Schéma implémentation](references/Diagram-MLOps-pompiers.drawio.png)
 
 ------------
 
