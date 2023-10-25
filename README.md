@@ -14,6 +14,12 @@ Project Organization
     │
     ├── .github\workflows
     │     └── python-app.yml
+    ├── airflow
+    │   ├── dags
+    │   │   └── dag_mlops_pompiers.py
+    │   ├── docker-compose.yaml
+    │   └── models
+    │       └── null_file.json
     ├── docker-compose.yml
     ├── LICENSE
     ├── models
@@ -24,7 +30,10 @@ Project Organization
     │   └── 2.2-wm-random-forest-features-selection.ipynb
     ├── README.md
     ├── references
-    │   ├── Cahier des charges LFB V2.docx
+    │   ├── Cahier des charges LFB.docx
+    │   ├── Diagram-light.png
+    │   ├── Diagram-MLOps-pompiers
+    │   ├── Diagram-MLOps-pompiers.drawio.png
     │   ├── Metadata
     │   │   ├── Incidents Metadata.xlsx
     │   │   └── Mobilisations Metadata.xlsx
@@ -45,6 +54,10 @@ Project Organization
         │   ├── models_training
         │   │   ├── __init__.py
         │   │   ├── model.py
+        │   ├── __pycache__
+        │   │   ├── api_admin.cpython-310.pyc
+        │   │   └── test_api_admin.cpython-310-pytest-7.4.0.pyc
+        │   ├── requirements.txt
         │   ├── test_api_admin.py
         │   └── tests
         │       ├── __init__.py
@@ -60,11 +73,12 @@ Project Organization
             ├── data
             │   ├── import_raw_data.py
             │   ├── __init__.py
-            │   ├── make_dataset.py
+            │   └── make_dataset.py
             ├── Dockerfile
             ├── models_training
             │   ├── __init__.py
             │   └── model.py
+            ├── requirements.txt
             └── test_api_user.py
 
 
