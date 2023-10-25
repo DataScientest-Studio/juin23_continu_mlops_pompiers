@@ -91,6 +91,13 @@ These data are provided to us by The London Datastore which is  a free and open 
 
 ------------
 
+Project Diagram
+------------
+
+![Schéma implémentation](references/Diagram-MLOps-pompiers.drawio.png)
+
+------------
+
 Application Operation
 ------------
 
@@ -126,11 +133,5 @@ A Streamlit interface has been created for the user to facilitate testing of the
 
 ------------
 
-Project Diagram
-------------
 
-![Schéma implémentation](references/Diagram-MLOps-pompiers.drawio.png)
 
-------------
-
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
