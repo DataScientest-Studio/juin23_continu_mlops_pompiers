@@ -14,6 +14,12 @@ Project Organization
     │
     ├── .github\workflows
     │     └── python-app.yml
+    ├── airflow
+    │   ├── dags
+    │   │   └── dag_mlops_pompiers.py
+    │   ├── docker-compose.yaml
+    │   └── models
+    │       └── null_file.json
     ├── docker-compose.yml
     ├── LICENSE
     ├── models
@@ -24,13 +30,15 @@ Project Organization
     │   └── 2.2-wm-random-forest-features-selection.ipynb
     ├── README.md
     ├── references
-    │   ├── Cahier des charges LFB V2.docx
+    │   ├── Cahier des charges LFB.docx
+    │   ├── Diagram-light.png
+    │   ├── Diagram-MLOps-pompiers
+    │   ├── Diagram-MLOps-pompiers.drawio.png
     │   ├── Metadata
     │   │   ├── Incidents Metadata.xlsx
     │   │   └── Mobilisations Metadata.xlsx
     │   └── Prédiction du temps de réponse des pompiers.docx
     ├── requirements.txt
-    ├── setup.py
     └── src
         ├── api_admin
         │   ├── api
@@ -46,6 +54,10 @@ Project Organization
         │   ├── models_training
         │   │   ├── __init__.py
         │   │   ├── model.py
+        │   ├── __pycache__
+        │   │   ├── api_admin.cpython-310.pyc
+        │   │   └── test_api_admin.cpython-310-pytest-7.4.0.pyc
+        │   ├── requirements.txt
         │   ├── test_api_admin.py
         │   └── tests
         │       ├── __init__.py
@@ -61,12 +73,12 @@ Project Organization
             ├── data
             │   ├── import_raw_data.py
             │   ├── __init__.py
-            │   ├── make_dataset.py
-            │   └── working_dataframe.py
+            │   └── make_dataset.py
             ├── Dockerfile
             ├── models_training
             │   ├── __init__.py
             │   └── model.py
+            ├── requirements.txt
             └── test_api_user.py
 
 
@@ -90,6 +102,13 @@ Data
 For the completion of this project, we utilized the data from these two datasets: <a target="_blank" href="https://data.london.gov.uk/dataset/london-fire-brigade-incident-records">LFB's data for incidents </a> and <a target="_blank" href="https://data.london.gov.uk/dataset/london-fire-brigade-incident-records">LFB's data for mobilisations </a>.</small></p>
 
 These data are provided to us by The London Datastore which is  a free and open data-sharing portal where anyone can access data relating to the capital of London. 
+
+------------
+
+Project Diagram
+------------
+
+![Schéma implémentation](references/Diagram-MLOps-pompiers.drawio.png)
 
 ------------
 
@@ -128,11 +147,5 @@ A Streamlit interface has been created for the user to facilitate testing of the
 
 ------------
 
-Project Diagram
-------------
 
-insérer ici l'image du schéma
 
-------------
-
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
